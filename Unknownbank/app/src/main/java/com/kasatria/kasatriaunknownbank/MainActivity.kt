@@ -25,11 +25,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.material.icons.filled.Favorite
+
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
+
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -81,6 +79,20 @@ import com.vwo.insights.surveys.utility.Util
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.OutlinedTextField
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.sp
 
 private const val TAG = "MainActivity"
 
@@ -562,118 +574,345 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
             }
         }
     } else {
-        NavigationSuiteScaffold(
-            navigationSuiteItems = {
-                AppDestinations.entries.forEach {
-                    item(
-                        icon = {
-                            Icon(
-                                it.icon,
-                                contentDescription = it.label
-                            )
-                        },
-                        label = { Text(it.label) },
-                        selected = it == currentDestination,
-                        onClick = {
-                            analytics.logEvent("test_event0") {
-                                param("event_category", "native_event_category")
-                                param("event_action", "native_event_action")
-                                param("event_label", "native_event_label")
-                            }
-                            analytics.logEvent("link_click_1") {
-                                param("event_category", "native_event_category_non_reserved")
-                                param("event_action", "native_event_action_non_reserved")
-                                param("event_label", "native_event_label_non_reserved")
-                                param("event_trigger", "button_click")
-                            }
-                            analytics.logEvent("link_click") {
-                                param("event_category", "native_event_category_non_reserved")
-                                param("event_action", "native_event_action_non_reserved")
-                                param("event_label", "native_event_label_non_reserved")
-                                param("event_trigger", "button_click")
-                            }
-                            
-                            // Send VWO custom event on navigation
-                            VWOInsights.sendCustomEvent("navigation_click", mapOf("destination" to it.label))
-                            
-                            currentDestination = it
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            /*
+             * =================================
+             * SCREEN CONTENT
+             * =================================
+             */
+
+            when (currentDestination) {
+
+                AppDestinations.HOME -> {
+                    HomeScreen(
+                        onApply = {
+                            currentDestination = AppDestinations.CREDIT_CARD
                         }
                     )
                 }
-            }
-        ) {
-            TrackScreenView(
-                analytics = analytics,
-                destination = currentDestination
-            )
 
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        when (currentDestination) {
-                            AppDestinations.CREDIT_CARD -> {
-                                CreditCardScreen(userId = userId)
-                            }
-                            
-                            AppDestinations.STORE -> {
-                                EcommerceScreen()
-                            }
-
-                            else -> {
-                                Greeting(
-                                    name = userId ?: "Guest",
-                                )
-
-                                if (isFeatureEnabled) {
-                                    Text(
-                                        text = vwoVariableText.ifEmpty { "VWO Feature is Active!" },
-                                        modifier = Modifier.padding(bottom = 8.dp)
-                                    )
-                                }
-
-                                Button(
-                                    onClick = {
-                                        // Trigger VWO FME Track Event (Goal)
-                                        val vwo =
-                                            VWO.getInstance(1202089, "00ece79c37ee1218c7cc74dac6fb7971")
-                                        val userContext = VWOUserContext().apply {
-                                            id = userId ?: "guest_user"
-                                        }
-                                        vwo?.trackEvent("openWebviewClick", userContext)
-
-                                        Log.d(TAG, "VWO Goal Triggered: open_webview_click")
-                                        showWebView = true
-                                    },
-                                ) {
-                                    Text("Open WebView")
-                                }
-
-                                Button(onClick = onLogout) {
-                                    Text("Logout")
-                                }
-                            }
-                        }
-                    }
+                AppDestinations.CREDIT_CARD -> {
+                    CreditCardScreen(
+                        userId = userId
+                    )
                 }
+
+                AppDestinations.STORE -> {
+                    EcommerceScreen()
+                }
+
+                else -> {
+                    Greeting(
+                        name = userId ?: "Guest"
+                    )
+                }
+            }
+
+
+            /*
+             * =================================
+             * FIGMA BOTTOM NAVIGATION
+             * =================================
+             */
+
+            UnknownbankBottomNavigation(
+                selectedDestination =
+                    currentDestination,
+
+                onDestinationSelected = {
+                        destination ->
+
+                    currentDestination =
+                        destination
+
+                    analytics.logEvent(
+                        "navigation_click"
+                    ) {
+                        param(
+                            "destination",
+                            destination.label
+                        )
+                    }
+
+                    VWOInsights.sendCustomEvent(
+                        "navigation_click",
+                        mapOf(
+                            "destination" to
+                                    destination.label
+                        )
+                    )
+                },
+
+                modifier = Modifier
+                    .align(
+                        Alignment.BottomCenter
+                    )
+            )
+        }
+
+    }
+}
+
+@Composable
+fun UnknownbankBottomNavigation(
+    selectedDestination: AppDestinations,
+    onDestinationSelected:
+        (AppDestinations) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    val items = listOf(
+        Triple(
+            AppDestinations.HOME,
+            R.drawable.nav_home,
+            "Home"
+        ),
+        Triple(
+            AppDestinations.ACCOUNT,
+            R.drawable.nav_account,
+            "Account"
+        ),
+        Triple(
+            AppDestinations.SCAN,
+            R.drawable.nav_scan,
+            "Scan"
+        ),
+        Triple(
+            AppDestinations.REWARDS,
+            R.drawable.nav_rewards,
+            "Rewards"
+        ),
+        Triple(
+            AppDestinations.SETTING,
+            R.drawable.nav_setting,
+            "Setting"
+        )
+    )
+
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(100.dp)
+    ) {
+
+        /*
+         * White navigation background
+         *
+         * Figma:
+         * y = 768
+         * height = 84
+         */
+
+        Box(
+            modifier = Modifier
+                .align(
+                    Alignment.BottomCenter
+                )
+                .fillMaxWidth()
+                .height(84.dp)
+                .shadow(
+                    elevation = 4.dp
+                )
+                .background(
+                    Color.White
+                )
+        )
+
+
+        Row(
+            modifier = Modifier
+                .align(
+                    Alignment.BottomCenter
+                )
+                .fillMaxWidth()
+                .height(84.dp)
+                .navigationBarsPadding(),
+
+            horizontalArrangement =
+                Arrangement.SpaceEvenly,
+
+            verticalAlignment =
+                Alignment.Top
+        ) {
+
+            items.forEach {
+                    (destination, icon, label) ->
+
+                BottomNavigationItem(
+                    destination =
+                        destination,
+
+                    icon = icon,
+
+                    label = label,
+
+                    selected =
+                        selectedDestination ==
+                                destination,
+
+                    onClick = {
+                        onDestinationSelected(
+                            destination
+                        )
+                    }
+                )
             }
         }
     }
 }
 
-enum class AppDestinations(
-    val label: String,
-    val icon: ImageVector,
+@Composable
+private fun BottomNavigationItem(
+    destination: AppDestinations,
+    icon: Int,
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
-    HOME("Home", Icons.Default.Home),
-    FAVORITES("Favorites", Icons.Default.Favorite),
-    STORE("Store", Icons.Default.ShoppingCart),
-    CREDIT_CARD("Apply", Icons.Default.CreditCard),
-    PROFILE("Profile", Icons.Default.AccountBox),
+
+    val isScan =
+        destination ==
+                AppDestinations.SCAN
+
+    Column(
+        modifier = Modifier
+            .width(64.dp)
+            .clickable(
+                onClick = onClick
+            ),
+
+        horizontalAlignment =
+            Alignment.CenterHorizontally
+    ) {
+
+        if (isScan) {
+
+            /*
+             * Raised middle Scan button
+             */
+
+            Box(
+                modifier = Modifier
+                    .offset(
+                        y = (-16).dp
+                    )
+                    .size(57.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape
+                    )
+                    .background(
+                        color =
+                            Color.White,
+
+                        shape =
+                            CircleShape
+                    ),
+
+                contentAlignment =
+                    Alignment.Center
+            ) {
+
+                Image(
+                    painter =
+                        painterResource(
+                            id = icon
+                        ),
+
+                    contentDescription =
+                        label,
+
+                    modifier =
+                        Modifier.size(
+                            26.dp
+                        )
+                )
+            }
+
+            Text(
+                text = label,
+
+                fontSize = 11.sp,
+
+                color =
+                    Color(0xFFA3A3A3),
+
+                modifier =
+                    Modifier.offset(
+                        y = (-10).dp
+                    )
+            )
+
+        } else {
+
+            Spacer(
+                modifier =
+                    Modifier.height(
+                        11.dp
+                    )
+            )
+
+            Image(
+                painter =
+                    painterResource(
+                        id = icon
+                    ),
+
+                contentDescription =
+                    label,
+
+                modifier =
+                    Modifier.size(
+                        30.dp
+                    ),
+
+                contentScale =
+                    ContentScale.Fit
+            )
+
+
+            Spacer(
+                modifier =
+                    Modifier.height(
+                        2.dp
+                    )
+            )
+
+
+            Text(
+                text = label,
+
+                fontSize = 11.sp,
+
+                color =
+                    if (selected) {
+                        Color(0xFF666666)
+                    } else {
+                        Color(0xFFA3A3A3)
+                    }
+            )
+        }
+    }
+}
+
+enum class AppDestinations(
+    val label: String
+) {
+
+    HOME("Home"),
+    ACCOUNT("Account"),
+    SCAN("Scan"),
+    REWARDS("Rewards"),
+    SETTING("Setting"),
+
+    // Not shown in bottom navigation.
+    // We'll navigate to these from buttons.
+    CREDIT_CARD("Credit Card"),
+    STORE("Store")
 }
 
 @Composable
