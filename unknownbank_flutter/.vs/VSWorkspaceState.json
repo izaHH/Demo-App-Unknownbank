@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\build",
+    "\\build\\app",
+    "\\build\\windows\\x64",
+    "\\ios",
+    "\\ios\\Flutter",
+    "\\ios\\Runner",
+    "\\ios\\Runner.xcodeproj",
+    "\\ios\\Runner.xcodeproj\\project.xcworkspace",
+    "\\ios\\Runner.xcworkspace"
+  ],
+  "SelectedNode": "\\build\\windows",
+  "PreviewInSolutionExplorer": false
+}

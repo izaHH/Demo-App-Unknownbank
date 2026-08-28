@@ -1,0 +1,5 @@
+package com.kasatria.unknownbank.unknownbank_flutter
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()

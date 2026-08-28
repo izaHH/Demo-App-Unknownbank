@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "102497930084",
+    "project_id": "unknownbank-app",
+    "storage_bucket": "unknownbank-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102497930084:android:72c86ed304e57992478871",
+        "android_client_info": {
+          "package_name": "com.kasatria.kasatriaunknownbank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAixUfPqztsZ-2fx_iBxp3rmbx2NBUYVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102497930084:android:1c13b6039b2c2e11478871",
+        "android_client_info": {
+          "package_name": "com.kasatria.unknownbank.unknownbank_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAixUfPqztsZ-2fx_iBxp3rmbx2NBUYVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
