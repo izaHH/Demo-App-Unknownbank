@@ -143,66 +143,28 @@ fun LoginScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-
-
         /*
          * =================================
          * HEADER BACKGROUND
          * =================================
          */
-
         Image(
             painter = painterResource(
-                id = R.drawable.login_header
+                id = R.drawable.full_background_light
             ),
-
             contentDescription = null,
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(273.dp)
-                .align(
-                    Alignment.TopCenter
-                ),
-
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
-
-        /*
-         * =================================
-         * WHITE GRADIENT
-         * Figma node 1:895
-         * =================================
-         */
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(94.dp)
-                .align(
-                    Alignment.TopCenter
-                )
-                .offset(
-                    y = 179.dp
-                )
-                .background(
-                    brush = Brush.verticalGradient(
-                        colorStops = arrayOf(
-
-                            0f to Color.Transparent,
-
-                            0.62f to Color.White.copy(
-                                alpha = 0.8f
-                            ),
-
-                            1f to Color.White
-                        )
-                    )
-                )
+      /*  Image(
+            painter = painterResource(
+                id = R.drawable.full_background_dark
+            ),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-
-
+*/
         /*
          * =================================
          * CONTENT
@@ -216,7 +178,6 @@ fun LoginScreen(
                 .padding(
                     horizontal = 20.dp
                 ),
-
             horizontalAlignment = Alignment.Start
         ) {
 
