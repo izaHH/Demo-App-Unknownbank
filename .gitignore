@@ -1,0 +1,59 @@
+# ========================================
+# Demo-App-Unknownbank
+# Shared ignore rules for Android + Flutter
+# ========================================
+
+# --- OS-generated files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE / editor files ---
+**/.idea/
+**/.vs/
+**/.vscode/
+*.iml
+*.ipr
+*.iws
+
+# --- Logs / temporary files ---
+*.log
+*.tmp
+*.swp
+
+# --- Local configuration / environment ---
+**/local.properties
+.env
+.env.*
+
+# --- Android / Gradle ---
+**/.gradle/
+**/.kotlin/
+**/build/
+**/captures/
+**/.externalNativeBuild/
+**/.cxx/
+
+# Local signing files
+*.jks
+*.keystore
+
+# --- Flutter / Dart ---
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub/
+**/.pub-cache/
+**/coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Flutter build outputs
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
