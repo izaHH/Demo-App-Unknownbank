@@ -2,7 +2,6 @@ package com.kasatria.kasatriaunknownbank
 
 import android.util.Log
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +30,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -76,17 +74,8 @@ private const val TAG = "LoginScreen"
 fun LoginScreen(
     username: String,
     onLogin: (username: String, password: String) -> Unit,
-    onGuestLogin: () -> Unit,
     onClose: () -> Unit
 ) {
-
-    /*
-     * Temporary demo user.
-     *
-     * The Figma screen already assumes that
-     * the user/account has been selected.
-     */
-    val demoUserId = "fa_demo_20"
 
     var password by remember {
         mutableStateOf("")
@@ -251,7 +240,7 @@ fun LoginScreen(
                 // Close button - top left
                 IconButton(
                     onClick = {
-                        onGuestLogin()
+                        onClose()
                     },
                     modifier = Modifier
                         .size(34.dp)
@@ -330,11 +319,8 @@ fun LoginScreen(
             ) {
 
                 Text(
-                    text = "fa  ••••••  20",
-
-                    style =
-                        MaterialTheme.typography.bodyLarge,
-
+                    text = maskUsername(username),
+                    style = MaterialTheme.typography.bodyLarge,
                     color = TextPrimary
                 )
             }
