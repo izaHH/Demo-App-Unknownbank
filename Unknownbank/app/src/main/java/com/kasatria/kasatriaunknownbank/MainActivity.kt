@@ -595,10 +595,32 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 }
 
                 AppDestinations.CREDIT_CARD -> {
-                    CreditCardScreen(
-                        userId = userId
+                    ApplyScreen(
+                        onBack = {
+                            currentDestination= AppDestinations.HOME
+                        },
+
+                        onCreditCard = {
+                            currentDestination = AppDestinations.CREDIT_CARD_LIST
+                        }
                     )
                 }
+
+                AppDestinations.CREDIT_CARD_LIST -> {
+                    CreditCardSelectionScreen(
+                        onBack =  {
+                            currentDestination = AppDestinations.CREDIT_CARD
+                        },
+                        onCardSelected = {
+                            // Next Screen
+                        },
+                        onFilter = {
+                            // Figma
+                        }
+                    )
+                }
+
+
 
                 AppDestinations.STORE -> {
                     EcommerceScreen()
@@ -618,39 +640,52 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
              * =================================
              */
 
-            UnknownbankBottomNavigation(
-                selectedDestination =
-                    currentDestination,
+            val showBottomNavigation =
+                currentDestination in listOf(
+                    AppDestinations.HOME,
+                    AppDestinations.ACCOUNT,
+                    AppDestinations.SCAN,
+                    AppDestinations.REWARDS,
+                    AppDestinations.SETTING
+                )
+            if(showBottomNavigation){
+                UnknownbankBottomNavigation(
+                    selectedDestination =
+                        currentDestination,
 
-                onDestinationSelected = {
-                        destination ->
+                    onDestinationSelected = {
+                            destination ->
 
-                    currentDestination =
-                        destination
+                        currentDestination =
+                            destination
 
-                    analytics.logEvent(
-                        "navigation_click"
-                    ) {
-                        param(
-                            "destination",
-                            destination.label
+                        analytics.logEvent(
+                            "navigation_click"
+                        ) {
+                            param(
+                                "destination",
+                                destination.label
+                            )
+                        }
+
+                        VWOInsights.sendCustomEvent(
+                            "navigation_click",
+                            mapOf(
+                                "destination" to
+                                        destination.label
+                            )
                         )
-                    }
+                    },
 
-                    VWOInsights.sendCustomEvent(
-                        "navigation_click",
-                        mapOf(
-                            "destination" to
-                                    destination.label
+                    modifier = Modifier
+                        .align(
+                            Alignment.BottomCenter
                         )
-                    )
-                },
+                )
 
-                modifier = Modifier
-                    .align(
-                        Alignment.BottomCenter
-                    )
-            )
+            }
+
+
         }
 
     }
@@ -909,9 +944,11 @@ enum class AppDestinations(
     REWARDS("Rewards"),
     SETTING("Setting"),
 
+
     // Not shown in bottom navigation.
     // We'll navigate to these from buttons.
     CREDIT_CARD("Credit Card"),
+    CREDIT_CARD_LIST("Credit Card List"),
     STORE("Store")
 }
 
