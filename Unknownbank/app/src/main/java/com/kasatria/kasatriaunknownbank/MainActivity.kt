@@ -78,6 +78,9 @@ import com.microsoft.clarity.Clarity
 import com.microsoft.clarity.ClarityConfig
 import com.vwo.insights.surveys.utility.Util
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.OutlinedTextField
+
 
 private const val TAG = "MainActivity"
 
@@ -143,106 +146,310 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             UnknownbankTheme {
-                var userId by rememberSaveable { mutableStateOf<String?>(null) }
-                var showLogin by rememberSaveable { mutableStateOf(true) }
+                var userId by rememberSaveable {
+                    mutableStateOf<String?>(null)
+                }
+
+                var pendingUsername by rememberSaveable {
+                    mutableStateOf("")
+                }
+
+                var showPasswordScreen by rememberSaveable {
+                    mutableStateOf(false)
+                }
+
+                var showLogin by rememberSaveable {
+                    mutableStateOf(true)
+                }
+
 
                 if (showLogin) {
-                    LoginScreen(
-                        onLogin = { id ->
 
-                            // Add Firebase Analytics user login
-                            analytics.setUserId(id)
-                            analytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
-                                param(FirebaseAnalytics.Param.METHOD, "custom_login")
+                    /*
+                     * STEP 1
+                     * User enters username
+                     */
+                    if (!showPasswordScreen) {
+
+                        UsernameEntryScreen(
+                            onContinue = { username ->
+
+                                pendingUsername = username
+                                showPasswordScreen = true
+
+                                Log.d(
+                                    TAG,
+                                    "Username entered, moving to password screen"
+                                )
                             }
-                            
-                            // Add VWO custom attributes on login
-                            val attributes = mapOf(
-                                "user_id" to id,
-                                "login_method" to "custom_login"
-                            )
-                            VWOInsights.setAttribute(attributes)
+                        )
 
-                            // Send VWO custom event on login
-                            VWOInsights.sendCustomEvent("login_success", mapOf("method" to "custom_login"))
-                            VWOInsights.sendCustomEvent("click_login", mapOf("method" to "custom_login"))
+                    } else {
 
-                            // Track VWO FME Goal
-                            val vwo = VWO.getInstance(1202089, "00ece79c37ee1218c7cc74dac6fb7971")
-                            val vwoContext = VWOUserContext()
-                            vwoContext.id = id
-                            vwo?.trackEvent("clickLogin", vwoContext)
+                        /*
+                         * STEP 2
+                         * Password screen from Figma
+                         */
+                        LoginScreen(
+                            username = pendingUsername,
 
-                            // Track Amplitude user login
-                            val amplitude = UnknownbankApplication.amplitude
-                            amplitude.setUserId(id)
-                            amplitude.track("user_login")
+                            onLogin = { username, _ ->
 
-                            val identify = Identify()
-                                .set("login_method", "custom_login")
-                            amplitude.identify(identify)
+                                /*
+                                 * IMPORTANT:
+                                 * We deliberately ignore the password here.
+                                 *
+                                 * Never send passwords to:
+                                 * Firebase
+                                 * Amplitude
+                                 * VWO
+                                 * Logcat
+                                 */
+
+                                analytics.setUserId(username)
+
+                                analytics.logEvent(
+                                    FirebaseAnalytics.Event.LOGIN
+                                ) {
+                                    param(
+                                        FirebaseAnalytics.Param.METHOD,
+                                        "custom_login"
+                                    )
+                                }
 
 
-                            userId = id
-                            showLogin = false
-                            Log.d(TAG, "User logged in with ID: $id")
-                        },
-                        onGuestLogin = {
-                            analytics.setUserId(null)
-                            analytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
-                                param(FirebaseAnalytics.Param.METHOD, "guest")
+                                /*
+                                 * VWO attributes
+                                 */
+
+                                val attributes = mapOf(
+                                    "user_id" to username,
+                                    "login_method" to "custom_login"
+                                )
+
+                                VWOInsights.setAttribute(
+                                    attributes
+                                )
+
+
+                                VWOInsights.sendCustomEvent(
+                                    "login_success",
+                                    mapOf(
+                                        "method" to "custom_login"
+                                    )
+                                )
+
+                                VWOInsights.sendCustomEvent(
+                                    "click_login",
+                                    mapOf(
+                                        "method" to "custom_login"
+                                    )
+                                )
+
+
+                                /*
+                                 * VWO FME
+                                 */
+
+                                val vwo = VWO.getInstance(
+                                    1202089,
+                                    "00ece79c37ee1218c7cc74dac6fb7971"
+                                )
+
+                                val vwoContext =
+                                    VWOUserContext()
+
+                                vwoContext.id =
+                                    username
+
+                                vwo?.trackEvent(
+                                    "clickLogin",
+                                    vwoContext
+                                )
+
+
+                                /*
+                                 * Amplitude
+                                 */
+
+                                val amplitude =
+                                    UnknownbankApplication.amplitude
+
+                                amplitude.setUserId(
+                                    username
+                                )
+
+                                amplitude.track(
+                                    "user_login"
+                                )
+
+                                val identify =
+                                    Identify()
+                                        .set(
+                                            "login_method",
+                                            "custom_login"
+                                        )
+
+                                amplitude.identify(
+                                    identify
+                                )
+
+
+                                /*
+                                 * Login complete
+                                 */
+
+                                userId = username
+
+                                showLogin = false
+
+                                Log.d(
+                                    TAG,
+                                    "User logged in with ID: $username"
+                                )
+                            },
+
+                            onClose = {
+
+                                /*
+                                 * Return to username screen
+                                 */
+
+                                showPasswordScreen = false
                             }
-                            
-                            // Add VWO custom attributes for guest
-                            val attributes = mapOf(
-                                "login_method" to "guest"
-                            )
-                            VWOInsights.setAttribute(attributes)
+                        )
+                    }
 
-                            // Send VWO custom event for guest login
-                            VWOInsights.sendCustomEvent("login_success", mapOf("method" to "guest"))
-                            VWOInsights.sendCustomEvent("click_continue_as_guest", mapOf("method" to "guest"))
-
-                            // Track VWO FME Goal
-                            val vwo = VWO.getInstance(1202089, "00ece79c37ee1218c7cc74dac6fb7971")
-                            val vwoContext = VWOUserContext()
-                            vwoContext.id = "guest_user"
-                            vwo?.trackEvent("clickContinueAsGuest", vwoContext)
-
-                            //Track Amplitude guest login
-                            val amplitude = UnknownbankApplication.amplitude
-                            amplitude.setUserId(null)
-
-                            val identify = Identify().set("login_method","guest")
-                            amplitude.identify(identify)
-                            amplitude.track("user_login")
-
-
-
-                            userId = null
-                            showLogin = false
-                            Log.d(TAG, "User continued as guest")
-                        }
-                    )
                 } else {
+
+                    /*
+                     * =================================
+                     * LOGGED-IN APP
+                     * =================================
+                     */
+
                     UnknownbankApp(
                         userId = userId,
-                        onLogout = {
-                            CookieManager.getInstance().removeAllCookies(null)
-                            WebStorage.getInstance().deleteAllData()
 
-                            val amplitude = UnknownbankApplication.amplitude
-                            //VWOInsights.setUserId(null)
+                        onLogout = {
+
+                            CookieManager
+                                .getInstance()
+                                .removeAllCookies(null)
+
+                            WebStorage
+                                .getInstance()
+                                .deleteAllData()
+
+
+                            val amplitude =
+                                UnknownbankApplication.amplitude
 
                             amplitude.setUserId(null)
+
                             analytics.setUserId(null)
+
+
+                            /*
+                             * Reset login flow
+                             */
+
                             userId = null
+
+                            pendingUsername = ""
+
+                            showPasswordScreen = false
+
                             showLogin = true
-                            Log.d(TAG, "User logged out and WebView data cleared.")
+
+
+                            Log.d(
+                                TAG,
+                                "User logged out and WebView data cleared."
+                            )
                         }
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun UsernameEntryScreen(
+    onContinue: (String) -> Unit
+) {
+
+    var username by rememberSaveable {
+        mutableStateOf("")
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment =
+            Alignment.CenterHorizontally
+    ) {
+
+        Spacer(
+            modifier = Modifier.height(
+                120.dp
+            )
+        )
+
+        Text(
+            text = "Enter your username",
+            style =
+                MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(
+            modifier = Modifier.height(
+                16.dp
+            )
+        )
+
+        OutlinedTextField(
+            value = username,
+
+            onValueChange = {
+                username = it
+            },
+
+            modifier =
+                Modifier.fillMaxWidth(),
+
+            singleLine = true,
+
+            label = {
+                Text("Username")
+            }
+        )
+
+        Spacer(
+            modifier = Modifier.height(
+                16.dp
+            )
+        )
+
+        Button(
+            onClick = {
+                onContinue(
+                    username.trim()
+                )
+            },
+
+            enabled =
+                username.isNotBlank(),
+
+            modifier =
+                Modifier.fillMaxWidth()
+        ) {
+
+            Text(
+                text = "Continue"
+            )
         }
     }
 }
