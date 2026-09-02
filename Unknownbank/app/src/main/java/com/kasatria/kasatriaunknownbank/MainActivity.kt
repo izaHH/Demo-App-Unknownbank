@@ -653,7 +653,18 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
 
                         onNext = {
-                            //Screen 07
+                            currentDestination = AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_PERSONAL_DETAILS -> {
+                    CreditCardPersonalDetailsScreen(
+                        onBack = {
+                            currentDestination = AppDestinations.CREDIT_CARD_REQUIREMENTS
+                        },
+                        onNext = {
+                            //currentDestination = AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
                         }
                     )
                 }
@@ -990,6 +1001,7 @@ enum class AppDestinations(
     CREDIT_CARD_FILTER("Credit Card Filter"),
     CREDIT_CARD_DETAIL("Credit Card Detail"),
     CREDIT_CARD_REQUIREMENTS("Credit Card Requirements"),
+    CREDIT_CARD_PERSONAL_DETAILS("Credit Card Personal Details"),
     STORE("Store")
 }
 
