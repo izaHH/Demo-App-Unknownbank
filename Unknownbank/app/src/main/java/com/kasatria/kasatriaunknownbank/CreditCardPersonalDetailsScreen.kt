@@ -467,7 +467,8 @@ private fun PersonalField(
 fun BasicFormField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color(0xFFF7F9FB)
 ) {
 
     val shape =
@@ -563,7 +564,8 @@ fun SelectionBox(
     value: String,
     options: List<String>,
     onSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color(0xFFF7F9FB)
 ) {
 
     var expanded by rememberSaveable {
