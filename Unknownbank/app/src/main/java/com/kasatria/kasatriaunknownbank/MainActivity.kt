@@ -615,7 +615,20 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             // Next Screen
                         },
                         onFilter = {
+                            currentDestination = AppDestinations.CREDIT_CARD_FILTER
                             // Figma
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_FILTER -> {
+                    CreditCardFilterScreen(
+                        onBack = {
+                            currentDestination = AppDestinations.CREDIT_CARD_LIST
+                        },
+
+                        onShowResults = {
+                            currentDestination = AppDestinations.CREDIT_CARD_LIST
                         }
                     )
                 }
@@ -949,6 +962,7 @@ enum class AppDestinations(
     // We'll navigate to these from buttons.
     CREDIT_CARD("Credit Card"),
     CREDIT_CARD_LIST("Credit Card List"),
+    CREDIT_CARD_FILTER("Credit Card Filter"),
     STORE("Store")
 }
 
