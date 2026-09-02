@@ -769,6 +769,52 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                     )
                 }
 
+                AppDestinations.ACCOUNT -> {
+
+                    NavigationPlaceholderScreen(
+                        title = "Account",
+                        username = userId,
+                        icon = R.drawable.nav_account,
+                        description =
+                            "View and manage your bank accounts."
+                    )
+                }
+
+
+                AppDestinations.SCAN -> {
+
+                    NavigationPlaceholderScreen(
+                        title = "Scan",
+                        username = userId,
+                        icon = R.drawable.nav_scan,
+                        description =
+                            "Scan a QR code to make a payment."
+                    )
+                }
+
+
+                AppDestinations.REWARDS -> {
+
+                    NavigationPlaceholderScreen(
+                        title = "Rewards",
+                        username = userId,
+                        icon = R.drawable.nav_rewards,
+                        description =
+                            "View your rewards and available benefits."
+                    )
+                }
+
+
+                AppDestinations.SETTING -> {
+
+                    NavigationPlaceholderScreen(
+                        title = "Setting",
+                        username = userId,
+                        icon = R.drawable.nav_setting,
+                        description =
+                            "Manage your preferences and account settings."
+                    )
+                }
 
 
 
@@ -777,8 +823,9 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 }
 
                 else -> {
-                    Greeting(
-                        name = userId ?: "Guest"
+                    Text(
+                        text = "Screen unavailable",
+                        modifier = Modifier.padding(20.dp)
                     )
                 }
             }
@@ -1013,8 +1060,9 @@ private fun BottomNavigationItem(
 
                     modifier =
                         Modifier.size(
-                            26.dp
-                        )
+                            100.dp
+                        ),
+                    contentScale = ContentScale.Fit
                 )
             }
 

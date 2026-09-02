@@ -14,16 +14,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.HourglassEmpty
-import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.kasatria.kasatriaunknownbank.ui.theme.PrimaryBlue
-import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
 import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 
@@ -126,53 +118,18 @@ fun CreditCardApprovalScreen(
              * =================================
              */
 
-            Box(
+            Image(
+                painter = painterResource(
+                    id = R.drawable.approval_success
+                ),
+                contentDescription = null,
                 modifier = Modifier
                     .size(100.dp)
                     .align(
                         Alignment.CenterHorizontally
-                    )
-                    .background(
-                        color =
-                            Color(0xFFE1F4ED),
-
-                        shape =
-                            CircleShape
                     ),
-
-                contentAlignment =
-                    Alignment.Center
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .size(62.dp)
-                        .background(
-                            color =
-                                Color(0xFF0DB36D),
-
-                            shape =
-                                CircleShape
-                        ),
-
-                    contentAlignment =
-                        Alignment.Center
-                ) {
-
-                    Icon(
-                        imageVector =
-                            Icons.Default.Check,
-
-                        contentDescription =
-                            null,
-
-                        tint = White,
-
-                        modifier =
-                            Modifier.size(38.dp)
-                    )
-                }
-            }
+                contentScale = ContentScale.Fit
+            )
 
 
             Spacer(
