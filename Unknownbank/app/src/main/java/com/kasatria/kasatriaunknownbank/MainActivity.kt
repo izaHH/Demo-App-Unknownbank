@@ -1,5 +1,6 @@
 package com.kasatria.kasatriaunknownbank
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
@@ -640,7 +641,19 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             currentDestination = AppDestinations.CREDIT_CARD_LIST
                         },
                         onApplyNow = {
-                            //Screen 06
+                            currentDestination = AppDestinations.CREDIT_CARD_REQUIREMENTS
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_REQUIREMENTS -> {
+                    CreditCardRequirementsScreen(
+                        onBack = {
+                            currentDestination = AppDestinations.CREDIT_CARD_DETAIL
+                        },
+
+                        onNext = {
+                            //Screen 07
                         }
                     )
                 }
@@ -976,6 +989,7 @@ enum class AppDestinations(
     CREDIT_CARD_LIST("Credit Card List"),
     CREDIT_CARD_FILTER("Credit Card Filter"),
     CREDIT_CARD_DETAIL("Credit Card Detail"),
+    CREDIT_CARD_REQUIREMENTS("Credit Card Requirements"),
     STORE("Store")
 }
 
