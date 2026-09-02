@@ -1,30 +1,24 @@
 package com.kasatria.kasatriaunknownbank
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -36,7 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,45 +42,53 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 
 @Composable
-fun CreditCardPersonalDetailsScreen(
+fun CreditCardAboutYouScreen(
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
 
-    var title by rememberSaveable {
-        mutableStateOf("MS / PUAN")
-    }
-
-    var fullName by rememberSaveable {
+    var nameOnCard by rememberSaveable {
         mutableStateOf("Farah Amira Ali")
     }
 
-    var icNumber by rememberSaveable {
-        mutableStateOf("851010145640")
+    var education by rememberSaveable {
+        mutableStateOf("Degree")
     }
 
-    var dateOfBirth by rememberSaveable {
-        mutableStateOf("10-10-1985")
+    var gender by rememberSaveable {
+        mutableStateOf("Female")
     }
 
-    var email by rememberSaveable {
-        mutableStateOf("farah.amira@gmail.com")
+    var race by rememberSaveable {
+        mutableStateOf("Malay")
     }
 
-    var countryCode by rememberSaveable {
-        mutableStateOf("+60")
+    var maritalStatus by rememberSaveable {
+        mutableStateOf("Married")
     }
 
-    var mobileNumber by rememberSaveable {
-        mutableStateOf("122500440")
+    var mothersName by rememberSaveable {
+        mutableStateOf("Dayang")
     }
 
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(White)
+        modifier = Modifier.fillMaxSize()
     ) {
+
+        /*
+         * Decorative background
+         */
+
+        Image(
+            painter = painterResource(
+                id = R.drawable.full_background_light
+            ),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
 
         Column(
             modifier = Modifier
@@ -107,11 +110,9 @@ fun CreditCardPersonalDetailsScreen(
 
                 IconButton(
                     onClick = onBack,
-
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .align(Alignment.CenterStart)
-                        .size(48.dp)
                 ) {
 
                     Icon(
@@ -150,11 +151,11 @@ fun CreditCardPersonalDetailsScreen(
 
             /*
              * =================================
-             * PERSONAL DETAILS + PROGRESS
+             * PROGRESS
              * =================================
              */
 
-            Row(
+            androidx.compose.foundation.layout.Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -171,9 +172,11 @@ fun CreditCardPersonalDetailsScreen(
             ) {
 
                 Text(
-                    text = "Personal Details",
+                    text =
+                        "Tell Us About Yourself",
 
-                    color = Color(0xFF333333),
+                    color =
+                        Color(0xFF333333),
 
                     fontSize = 15.sp,
 
@@ -183,7 +186,7 @@ fun CreditCardPersonalDetailsScreen(
 
 
                 Text(
-                    text = "20%",
+                    text = "40%",
 
                     color =
                         Color(0xFF0EAF5F),
@@ -201,10 +204,6 @@ fun CreditCardPersonalDetailsScreen(
                     Modifier.height(11.dp)
             )
 
-
-            /*
-             * Progress track
-             */
 
             Box(
                 modifier = Modifier
@@ -224,7 +223,7 @@ fun CreditCardPersonalDetailsScreen(
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.20f)
+                        .fillMaxWidth(0.40f)
                         .height(6.dp)
                         .background(
                             color =
@@ -251,137 +250,101 @@ fun CreditCardPersonalDetailsScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(
+                        rememberScrollState()
+                    )
                     .padding(
-                        horizontal = 20.dp
+                        start = 20.dp,
+                        end = 20.dp,
+                        bottom = 100.dp
                     ),
 
                 verticalArrangement =
                     Arrangement.spacedBy(18.dp)
             ) {
 
-                SelectionField(
-                    label = "Title",
-                    value = title,
+                AboutYouTextField(
+                    label = "Name on Card",
+                    value = nameOnCard,
+                    onValueChange = {
+                        nameOnCard = it
+                    }
+                )
+
+
+                AboutYouSelectionField(
+                    label = "Education",
+                    value = education,
                     options = listOf(
-                        "MS / PUAN",
-                        "MR / ENCIK"
+                        "Secondary",
+                        "Diploma",
+                        "Degree",
+                        "Postgraduate"
                     ),
                     onSelected = {
-                        title = it
+                        education = it
                     }
                 )
 
 
-                PersonalField(
-                    label =
-                        "Full Name (Completes as per NRIC)",
+                AboutYouSelectionField(
+                    label = "Gender",
+                    value = gender,
+                    options = listOf(
+                        "Female",
+                        "Male"
+                    ),
+                    onSelected = {
+                        gender = it
+                    }
+                )
 
-                    value = fullName,
 
+                AboutYouSelectionField(
+                    label = "Race",
+                    value = race,
+                    options = listOf(
+                        "Malay",
+                        "Chinese",
+                        "Indian",
+                        "Others"
+                    ),
+                    onSelected = {
+                        race = it
+                    }
+                )
+
+
+                AboutYouSelectionField(
+                    label = "Marital Status",
+                    value = maritalStatus,
+                    options = listOf(
+                        "Single",
+                        "Married",
+                        "Divorced",
+                        "Widowed"
+                    ),
+                    onSelected = {
+                        maritalStatus = it
+                    }
+                )
+
+
+                AboutYouTextField(
+                    label = "Mother’s Name",
+                    value = mothersName,
                     onValueChange = {
-                        fullName = it
+                        mothersName = it
                     }
                 )
-
-
-                PersonalField(
-                    label = "IC No.",
-
-                    value = icNumber,
-
-                    onValueChange = {
-                        icNumber = it
-                    }
-                )
-
-
-                PersonalField(
-                    label = "Date of birth",
-
-                    value = dateOfBirth,
-
-                    onValueChange = {
-                        dateOfBirth = it
-                    }
-                )
-
-
-                PersonalField(
-                    label = "Email",
-
-                    value = email,
-
-                    onValueChange = {
-                        email = it
-                    }
-                )
-
-
-                /*
-                 * Mobile No.
-                 */
-
-                Column {
-
-                    Text(
-                        text = "Mobile No.",
-
-                        color =
-                            Color(0xFF333333),
-
-                        fontSize = 14.sp
-                    )
-
-
-                    Spacer(
-                        modifier =
-                            Modifier.height(7.dp)
-                    )
-
-
-                    Row(
-                        horizontalArrangement =
-                            Arrangement.spacedBy(10.dp)
-                    ) {
-
-                        SelectionBox(
-                            value = countryCode,
-
-                            options = listOf(
-                                "+60",
-                                "+65",
-                                "+62"
-                            ),
-
-                            onSelected = {
-                                countryCode = it
-                            },
-
-                            modifier =
-                                Modifier.width(100.dp)
-                        )
-
-
-                        BasicFormField(
-                            value = mobileNumber,
-
-                            onValueChange = {
-                                mobileNumber = it
-                            },
-
-                            modifier =
-                                Modifier.weight(1f)
-                        )
-                    }
-                }
             }
         }
 
 
         /*
          * =================================
-         * NEXT
+         * NEXT BUTTON
          * =================================
          */
 
@@ -426,7 +389,7 @@ fun CreditCardPersonalDetailsScreen(
 
 
 @Composable
-private fun PersonalField(
+private fun AboutYouTextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit
@@ -436,10 +399,7 @@ private fun PersonalField(
 
         Text(
             text = label,
-
-            color =
-                Color(0xFF333333),
-
+            color = Color(0xFF333333),
             fontSize = 14.sp
         )
 
@@ -464,65 +424,7 @@ private fun PersonalField(
 
 
 @Composable
-fun BasicFormField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    val shape =
-        RoundedCornerShape(8.dp)
-
-    Box(
-        modifier = modifier
-            .height(46.dp)
-            .background(
-                color =
-                    Color(0xFFF7F9FB),
-
-                shape = shape
-            )
-            .border(
-                width = 1.dp,
-
-                color =
-                    Color(0xFFDDDDDD),
-
-                shape = shape
-            )
-            .padding(
-                horizontal = 19.dp
-            ),
-
-        contentAlignment =
-            Alignment.CenterStart
-    ) {
-
-        BasicTextField(
-            value = value,
-
-            onValueChange =
-                onValueChange,
-
-            singleLine = true,
-
-            modifier =
-                Modifier.fillMaxWidth(),
-
-            textStyle =
-                TextStyle(
-                    color =
-                        Color(0xFF666666),
-
-                    fontSize = 15.sp
-                )
-        )
-    }
-}
-
-
-@Composable
-private fun SelectionField(
+private fun AboutYouSelectionField(
     label: String,
     value: String,
     options: List<String>,
@@ -549,115 +451,14 @@ private fun SelectionField(
 
         SelectionBox(
             value = value,
+
             options = options,
-            onSelected = onSelected,
+
+            onSelected =
+                onSelected,
+
             modifier =
                 Modifier.fillMaxWidth()
         )
-    }
-}
-
-
-@Composable
-fun SelectionBox(
-    value: String,
-    options: List<String>,
-    onSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    var expanded by rememberSaveable {
-        mutableStateOf(false)
-    }
-
-    val shape =
-        RoundedCornerShape(8.dp)
-
-
-    Box(
-        modifier = modifier
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(46.dp)
-                .background(
-                    color =
-                        Color(0xFFF7F9FB),
-
-                    shape = shape
-                )
-                .border(
-                    width = 1.dp,
-
-                    color =
-                        Color(0xFFDDDDDD),
-
-                    shape = shape
-                )
-                .clickable {
-                    expanded = true
-                }
-                .padding(
-                    start = 19.dp,
-                    end = 10.dp
-                ),
-
-            verticalAlignment =
-                Alignment.CenterVertically,
-
-            horizontalArrangement =
-                Arrangement.SpaceBetween
-        ) {
-
-            Text(
-                text = value,
-
-                color =
-                    Color(0xFF666666),
-
-                fontSize = 15.sp
-            )
-
-
-            Icon(
-                imageVector =
-                    Icons.Default.KeyboardArrowDown,
-
-                contentDescription =
-                    "Select",
-
-                tint =
-                    Color(0xFF777777),
-
-                modifier =
-                    Modifier.size(24.dp)
-            )
-        }
-
-
-        DropdownMenu(
-            expanded = expanded,
-
-            onDismissRequest = {
-                expanded = false
-            }
-        ) {
-
-            options.forEach { option ->
-
-                DropdownMenuItem(
-                    text = {
-                        Text(option)
-                    },
-
-                    onClick = {
-                        onSelected(option)
-                        expanded = false
-                    }
-                )
-            }
-        }
     }
 }
