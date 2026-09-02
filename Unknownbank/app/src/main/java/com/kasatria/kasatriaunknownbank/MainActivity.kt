@@ -698,12 +698,30 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                     CreditCardExtraDetailsScreen(
                         onBack = {
-                            currentDestination =
-                                AppDestinations.CREDIT_CARD_JOB_DETAILS
+                            currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
                         },
 
                         onNext = {
-                            // Screen 11 next
+                            currentDestination = AppDestinations.CREDIT_CARD_REVIEW
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_REVIEW -> {
+
+                    CreditCardReviewScreen(
+                        onBack = {
+                            currentDestination =
+                                AppDestinations.CREDIT_CARD_EXTRA_DETAILS
+                        },
+
+                        onEditPersonal = {
+                            currentDestination =
+                                AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
+                        },
+
+                        onNext = {
+                            // Screen 12 next
                         }
                     )
                 }
@@ -1044,6 +1062,7 @@ enum class AppDestinations(
     CREDIT_CARD_ABOUT_YOU("Credit Card About You"),
     CREDIT_CARD_JOB_DETAILS("Credit Card Job Details"),
     CREDIT_CARD_EXTRA_DETAILS("Credit Card Extra Details"),
+    CREDIT_CARD_REVIEW("Credit Card Review"),
     STORE("Store")
 }
 
