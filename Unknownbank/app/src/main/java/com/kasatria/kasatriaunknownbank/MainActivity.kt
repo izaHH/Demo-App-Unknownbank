@@ -88,6 +88,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -612,7 +613,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             currentDestination = AppDestinations.CREDIT_CARD
                         },
                         onCardSelected = {
-                            // Next Screen
+                            currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
                         onFilter = {
                             currentDestination = AppDestinations.CREDIT_CARD_FILTER
@@ -629,6 +630,17 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                         onShowResults = {
                             currentDestination = AppDestinations.CREDIT_CARD_LIST
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_DETAIL -> {
+                    CreditCardDetailScreen(
+                        onBack = {
+                            currentDestination = AppDestinations.CREDIT_CARD_LIST
+                        },
+                        onApplyNow = {
+                            //Screen 06
                         }
                     )
                 }
@@ -963,6 +975,7 @@ enum class AppDestinations(
     CREDIT_CARD("Credit Card"),
     CREDIT_CARD_LIST("Credit Card List"),
     CREDIT_CARD_FILTER("Credit Card Filter"),
+    CREDIT_CARD_DETAIL("Credit Card Detail"),
     STORE("Store")
 }
 
