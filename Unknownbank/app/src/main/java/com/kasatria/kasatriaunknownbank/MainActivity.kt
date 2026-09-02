@@ -746,7 +746,25 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
 
                         onUploadNow = {
-                            // Screen 14 next
+                            currentDestination = AppDestinations.CREDIT_CARD_APPROVED
+                        }
+                    )
+                }
+
+                AppDestinations.CREDIT_CARD_APPROVED -> {
+
+                    CreditCardApprovalScreen(
+
+                        onClose = {
+                            currentDestination = AppDestinations.HOME
+                        },
+
+                        onBackToHome = {
+                            currentDestination = AppDestinations.HOME
+                        },
+
+                        onScreenShown = {
+                            // Add final analytics here.
                         }
                     )
                 }
@@ -1091,6 +1109,7 @@ enum class AppDestinations(
     CREDIT_CARD_REVIEW("Credit Card Review"),
     CREDIT_CARD_ALMOST_THERE("Credit Card Almost There"),
     CREDIT_CARD_UPLOAD_DOCUMENTS("Credit Card Upload Documents"),
+    CREDIT_CARD_APPROVED("Credit Card Approved"),
 
     STORE("Store")
 }
