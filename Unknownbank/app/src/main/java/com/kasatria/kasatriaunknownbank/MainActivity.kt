@@ -669,7 +669,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_PERSONAL_DETAILS -> {
                     CreditCardPersonalDetailsScreen(
                         applicationData = applicationData,
-                        onApplicationDataChanged = {
+                        onApplicationDataChange = {
                             applicationData = it
                         },
                         onBack = {
@@ -683,6 +683,10 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_ABOUT_YOU -> {
                     CreditCardAboutYouScreen(
+                        applicationData = applicationData,
+                        onApplicationDataChange = {
+                            applicationData = it
+                        },
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
                         },

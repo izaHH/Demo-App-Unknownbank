@@ -43,34 +43,11 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardAboutYouScreen(
+    applicationData: CreditCardApplicationData,
+    onApplicationDataChange: (CreditCardApplicationData) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
-
-    var nameOnCard by rememberSaveable {
-        mutableStateOf("Farah Amira Ali")
-    }
-
-    var education by rememberSaveable {
-        mutableStateOf("Degree")
-    }
-
-    var gender by rememberSaveable {
-        mutableStateOf("Female")
-    }
-
-    var race by rememberSaveable {
-        mutableStateOf("Malay")
-    }
-
-    var maritalStatus by rememberSaveable {
-        mutableStateOf("Married")
-    }
-
-    var mothersName by rememberSaveable {
-        mutableStateOf("Dayang")
-    }
-
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -266,16 +243,20 @@ fun CreditCardAboutYouScreen(
 
                 AboutYouTextField(
                     label = "Name on Card",
-                    value = nameOnCard,
+                    value = applicationData.nameOnCard,
                     onValueChange = {
-                        nameOnCard = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                nameOnCard = it
+                            )
+                        )
                     }
                 )
 
 
                 AboutYouSelectionField(
                     label = "Education",
-                    value = education,
+                    value = applicationData.education,
                     options = listOf(
                         "Secondary",
                         "Diploma",
@@ -283,27 +264,35 @@ fun CreditCardAboutYouScreen(
                         "Postgraduate"
                     ),
                     onSelected = {
-                        education = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                education = it
+                            )
+                        )
                     }
                 )
 
 
                 AboutYouSelectionField(
                     label = "Gender",
-                    value = gender,
+                    value = applicationData.gender,
                     options = listOf(
                         "Female",
                         "Male"
                     ),
                     onSelected = {
-                        gender = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                gender = it
+                            )
+                        )
                     }
                 )
 
 
                 AboutYouSelectionField(
                     label = "Race",
-                    value = race,
+                    value = applicationData.race,
                     options = listOf(
                         "Malay",
                         "Chinese",
@@ -311,14 +300,18 @@ fun CreditCardAboutYouScreen(
                         "Others"
                     ),
                     onSelected = {
-                        race = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                race = it
+                            )
+                        )
                     }
                 )
 
 
                 AboutYouSelectionField(
                     label = "Marital Status",
-                    value = maritalStatus,
+                    value = applicationData.maritalStatus,
                     options = listOf(
                         "Single",
                         "Married",
@@ -326,16 +319,24 @@ fun CreditCardAboutYouScreen(
                         "Widowed"
                     ),
                     onSelected = {
-                        maritalStatus = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                maritalStatus = it
+                            )
+                        )
                     }
                 )
 
 
                 AboutYouTextField(
                     label = "Mother’s Name",
-                    value = mothersName,
+                    value = applicationData.motherName,
                     onValueChange = {
-                        mothersName = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                motherName = it
+                            )
+                        )
                     }
                 )
             }
