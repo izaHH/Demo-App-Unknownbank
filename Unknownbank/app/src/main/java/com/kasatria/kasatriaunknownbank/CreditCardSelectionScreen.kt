@@ -42,7 +42,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
 @Composable
 fun CreditCardSelectionScreen(
     onBack: () -> Unit,
-    onCardSelected: (String) -> Unit = {},
+    onCardSelected: (CreditCardProduct) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
 
@@ -213,7 +213,7 @@ fun CreditCardSelectionScreen(
 
                     onClick ={
                         onCardSelected(
-                            "Bank World Mastercard"
+                            CreditCardProducts.BankWorldMastercard
                         )
                     }
                 )
@@ -226,9 +226,12 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Gold\nMastercard",
 
-                    onClick = {
-                        onCardSelected("Bank Gold Mastercard")
-                    }
+                    enabled = false
+//                    onClick ={
+//                        onCardSelected(
+//                            CreditCardProducts.BankWorldMastercard
+//                        )
+//                    }
 
                 )
 
@@ -240,9 +243,12 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Woman\nMastercard",
 
-                    onClick = {
-                        onCardSelected("Bank Woman Mastercard")
-                    }
+                    enabled = false
+//                    onClick ={
+//                        onCardSelected(
+//                            CreditCardProducts.BankWorldMastercard
+//                        )
+//                    }
                 )
 
 
@@ -252,10 +258,12 @@ fun CreditCardSelectionScreen(
 
                     name =
                         "Bank Platinum\nIslamic Mastercard",
-
-                    onClick = {
-                        onCardSelected("Bank Platinum Islamic Mastercard")
-                    }
+                    enabled = false
+//                    onClick ={
+//                        onCardSelected(
+//                            CreditCardProducts.BankWorldMastercard
+//                        )
+//                    }
                 )
 
 

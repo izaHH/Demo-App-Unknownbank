@@ -43,7 +43,8 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 @Composable
 fun CreditCardDetailScreen(
     onBack: () -> Unit,
-    onApplyNow: () -> Unit
+    onApplyNow: () -> Unit,
+    product: CreditCardProduct
 ) {
 
     Box(
@@ -61,9 +62,9 @@ fun CreditCardDetailScreen(
 
         Image(
             painter = painterResource(
-                id = R.drawable.credit_card_world_hero
+                id = product.heroImageRes
             ),
-            contentDescription = null,
+            contentDescription = product.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(420.dp),
@@ -118,7 +119,7 @@ fun CreditCardDetailScreen(
              */
 
             Text(
-                text = "Bank World Mastercard",
+                text = product.name,
 
                 modifier = Modifier
                     .fillMaxWidth()

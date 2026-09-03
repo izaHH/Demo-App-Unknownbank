@@ -138,6 +138,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         analytics = Firebase.analytics
+        //Remove this line if require ga4 or set to true
+        analytics.setAnalyticsCollectionEnabled(false)
 
         val campaignParams = Bundle().apply {
             putString(FirebaseAnalytics.Param.CAMPAIGN, "summer_promo_2026")
@@ -615,8 +617,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         onBack =  {
                             currentDestination = AppDestinations.CREDIT_CARD
                         },
-                        onCardSelected = { productName ->
-                            selectedProductName = productName
+                        onCardSelected = { product ->
+                            selectedProduct = product
                             currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
                         onFilter = {
@@ -640,6 +642,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_DETAIL -> {
                     CreditCardDetailScreen(
+                        product = selectedProduct,
+
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_LIST
                         },
@@ -778,22 +782,28 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                                 param("event_category", eventCategory)
                                 param("event_action", "Credit Card Application Success")
                                 param("event_label","Application Success")
-                                param("product_name", ${selectedProduct.name})
-                                param("product_category",${selectedProduct.category})
-                                param("product_type",${selectedProduct.type})
-                                param("product_banking_category",${selectedProduct.bankingCategory})
-                                param("product_benefit",${selectedProduct.benefit})
-                                param("product_card_type",${selectedProduct.cardType})
-                                param("product_card_tiers",${selectedProduct.tier})
-                                param("product_card_interest",${selectedProduct.interest})
+                                param("product_name", selectedProduct.name)
+                                param("product_category",selectedProduct.category)
+                                param("product_type",selectedProduct.type)
+                                param("product_banking_category",selectedProduct.bankingCategory)
+                                param("product_benefit",selectedProduct.benefit)
+                                param("product_card_type",selectedProduct.cardType)
+                                param("product_card_tiers",selectedProduct.tier)
+                                param("product_card_interest",selectedProduct.interest)
 
                             //VWOInsights.sendCustomEvent
                                 VWOInsights.sendCustomEvent("card_application_success", mapOf(
                                     "event_category" to eventCategory,
                                     "event_action" to "Credit Card Application Success",
                                     "event_label" to "Application Success",
-                                    "product_name" to ${selectedProduct.name},
-                                    "product_category" to "Credit Card"
+                                    "product_name" to selectedProduct.name,
+                                    "product_category" to selectedProduct.category,
+                                    "product_type" to selectedProduct.type,
+                                    "product_banking_category" to selectedProduct.bankingCategory,
+                                    "product_benefit" to selectedProduct.benefit,
+                                    "product_card_type" to selectedProduct.cardType,
+                                    "product_card_tiers" to selectedProduct.tier,
+                                    "product_card_interest" to selectedProduct.interest
                                 ))
 
                             //Amplitude Track
@@ -802,8 +812,14 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                                         "event_category" to eventCategory,
                                         "event_action" to "Credit Card Application Success",
                                         "event_label" to "Application Success",
-                                        "product_name" to ${selectedProduct.name},
-                                        "product_category" to "Credit Card",
+                                        "product_name" to selectedProduct.name,
+                                        "product_category" to selectedProduct.category,
+                                        "product_type" to selectedProduct.type,
+                                        "product_banking_category" to selectedProduct.bankingCategory,
+                                        "product_benefit" to selectedProduct.benefit,
+                                        "product_card_type" to selectedProduct.cardType,
+                                        "product_card_tiers" to selectedProduct.tier,
+                                        "product_card_interest" to selectedProduct.interest
                                     )
                                 )
                             }
