@@ -41,6 +41,7 @@ object CreditCardProducts {
         annualFee = "RM 10,000",
         description = "Enjoy instant reward redemptions with Premier Travel Credit Card! " + "Get up to 5x reward points, complimentary travel insurance and " +
             "annual passes to selected airport lounges.",
+
         featuredBenefits = listOf(
             CreditCardBenefit(
                 iconRes = R.drawable.benefit_fee_waiver,
@@ -70,7 +71,22 @@ object CreditCardProducts {
 
         minIncome = "RM 100,000 per annum",
         annualFee = "FREE*",
-        description = "Credit card benefits and features."
+        description = "Credit card benefits and features.",
+
+        featuredBenefits = listOf(
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_fee_waiver,
+                text = "Annual Fee Waiver"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_cashback,
+                text = "Up to 15%\nCashback"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_points,
+                text = "Earn 5x\nReward Points"
+            )
+        )
     )
 
     val BankWomanMastercard = CreditCardProduct(
@@ -87,8 +103,22 @@ object CreditCardProducts {
 
         minIncome = "RM 100,000 per annum",
         annualFee = "FREE*",
-        description = "Credit card benefits and features."
+        description = "Credit card benefits and features.",
 
+        featuredBenefits = listOf(
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_fee_waiver,
+                text = "Annual Fee Waiver"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_cashback,
+                text = "Up to 15%\nCashback"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_points,
+                text = "Earn 5x\nReward Points"
+            )
+        )
     )
 
     val BankPlatinumIslamicMastercard = CreditCardProduct(
@@ -105,6 +135,21 @@ object CreditCardProducts {
 
         minIncome = "RM 100,000 per annum",
         annualFee = "FREE*",
-        description = "Credit card benefits and features."
+        description = "Credit card benefits and features.",
+
+        featuredBenefits = listOf(
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_fee_waiver,
+                text = "Annual Fee Waiver"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_cashback,
+                text = "Up to 15%\nCashback"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_points,
+                text = "Earn 5x\nReward Points"
+            )
+        )
     )
 }
