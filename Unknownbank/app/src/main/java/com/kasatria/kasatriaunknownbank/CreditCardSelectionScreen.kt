@@ -41,10 +41,56 @@ import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
 
 @Composable
 fun CreditCardSelectionScreen(
+    filters: CreditCardFilters,
     onBack: () -> Unit,
     onCardSelected: (CreditCardProduct) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
+
+    val products = listOf(
+        CreditCardProducts.BankWorldMastercard,
+        CreditCardProducts.BankGoldMastercard,
+        CreditCardProducts.BankWomanMastercard,
+        CreditCardProducts.BankPlatinumIslamicMastercard
+    )
+
+    val filteredProducts = products.filter { product ->
+
+        val matchesSearch =
+            filters.searchText.isBlank() ||
+                    product.name.contains(
+                        filters.searchText,
+                        ignoreCase = true
+                    )
+
+        val matchesTier =
+            filters.tier == "All" ||
+                    product.tier.equals(
+                        filters.tier,
+                        ignoreCase = true
+                    )
+
+        val matchesInterest =
+            filters.interest == "All" ||
+                    when (filters.interest) {
+
+                        "Islamic" ->
+                            product.bankingCategory.equals(
+                                "Islamic",
+                                ignoreCase = true
+                            )
+
+                        else ->
+                            product.interest.equals(
+                                filters.interest,
+                                ignoreCase = true
+                            )
+                    }
+
+        matchesSearch &&
+                matchesTier &&
+                matchesInterest
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -204,76 +250,17 @@ fun CreditCardSelectionScreen(
                     )
             ) {
 
-                CreditCardOption(
-                    image =
-                        R.drawable.card_world,
+                filteredProducts.forEach { product ->
 
-                    name =
-                        "Bank World\nMastercard",
+                    CreditCardOption(
+                        image = product.imageRes,
+                        name = product.name,
 
-                    onClick ={
-                        onCardSelected(
-                            CreditCardProducts.BankWorldMastercard
-                        )
-                    }
-                )
-
-
-                CreditCardOption(
-                    image =
-                        R.drawable.card_gold,
-
-                    name =
-                        "Bank Gold\nMastercard",
-
-                    onClick ={
-                        onCardSelected(
-                            CreditCardProducts.BankGoldMastercard
-                        )
-                    }
-
-                )
-
-
-                CreditCardOption(
-                    image =
-                        R.drawable.card_woman,
-
-                    name =
-                        "Bank Woman\nMastercard",
-
-                    onClick = {
-                        onCardSelected(
-                            CreditCardProducts.BankWomanMastercard
-                        )
-                    }
-                )
-
-
-                CreditCardOption(
-                    image =
-                        R.drawable.card_platinum_islamic,
-
-                    name =
-                        "Bank Platinum\nIslamic Mastercard",
-
-                    onClick ={
-                        onCardSelected(
-                            CreditCardProducts.BankPlatinumIslamicMastercard
-                        )
-                    }
-                )
-
-
-                CreditCardOption(
-                    image =
-                        R.drawable.card_fuel,
-
-                    name =
-                        "Bank Fuel\nMastercard",
-
-                    enabled = false
-                )
+                        onClick = {
+                            onCardSelected(product)
+                        }
+                    )
+                }
 
 
                 Spacer(

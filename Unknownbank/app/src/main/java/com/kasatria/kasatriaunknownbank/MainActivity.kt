@@ -483,6 +483,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
     var applicationData by remember { mutableStateOf(CreditCardApplicationData()) }
     var applicationReference by rememberSaveable { mutableStateOf("21092484852030") }
     var applicationDate by rememberSaveable { mutableStateOf("") }
+    var creditCardFilters by remember { mutableStateOf(CreditCardFilters()) }
     var webViewUrl by rememberSaveable { mutableStateOf("") }
     var showWebView by rememberSaveable { mutableStateOf(false) }
 
@@ -620,6 +621,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_LIST -> {
                     CreditCardSelectionScreen(
+                        filters = creditCardFilters,
                         onBack =  {
                             currentDestination = AppDestinations.CREDIT_CARD
                         },
@@ -650,6 +652,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_FILTER -> {
                     CreditCardFilterScreen(
+                        //filters = creditCardFilters,
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_LIST
                         },

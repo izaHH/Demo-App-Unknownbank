@@ -47,21 +47,12 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardFilterScreen(
+    filters: CreditCardFilters,
+    onFiltersChange: (CreditCardFilters) -> Unit,
     onBack: () -> Unit,
     onShowResults: () -> Unit
 ) {
 
-    var searchText by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    var selectedTier by rememberSaveable {
-        mutableStateOf("All")
-    }
-
-    var selectedInterest by rememberSaveable {
-        mutableStateOf("All")
-    }
 
 
     Box(
@@ -143,10 +134,14 @@ fun CreditCardFilterScreen(
 
 
             SearchField(
-                value = searchText,
+                value = filters.searchText,
 
                 onValueChange = {
-                    searchText = it
+                    onFiltersChange(
+                        filters.copy(
+                            searchText = it
+                        )
+                    )
                 },
 
                 modifier = Modifier
@@ -198,36 +193,52 @@ fun CreditCardFilterScreen(
                 FilterChip(
                     text = "All",
                     selected =
-                        selectedTier == "All",
+                        filters.tier == "All",
                     onClick = {
-                        selectedTier = "All"
+                        onFiltersChange(
+                            filters.copy(
+                                tier = "All"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Silver",
                     selected =
-                        selectedTier == "Silver",
+                        filters.tier == "Silver",
                     onClick = {
-                        selectedTier = "Silver"
+                        onFiltersChange(
+                            filters.copy(
+                                tier = "Silver"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Gold",
                     selected =
-                        selectedTier == "Gold",
+                        filters.tier == "Gold",
                     onClick = {
-                        selectedTier = "Gold"
+                        onFiltersChange(
+                            filters.copy(
+                                tier = "Gold"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Platinum",
                     selected =
-                        selectedTier == "Platinum",
+                        filters.tier == "Platinum",
                     onClick = {
-                        selectedTier = "Platinum"
+                        onFiltersChange(
+                            filters.copy(
+                                tier = "Platinum"
+                            )
+                        )
                     }
                 )
             }
@@ -276,36 +287,52 @@ fun CreditCardFilterScreen(
                 FilterChip(
                     text = "All",
                     selected =
-                        selectedInterest == "All",
+                        filters.interest == "All",
                     onClick = {
-                        selectedInterest = "All"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "All"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Islamic",
                     selected =
-                        selectedInterest == "Islamic",
+                        filters.interest == "Islamic",
                     onClick = {
-                        selectedInterest = "Islamic"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Islamic"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Cashback",
                     selected =
-                        selectedInterest == "Cashback",
+                        filters.interest == "Cashback",
                     onClick = {
-                        selectedInterest = "Cashback"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Cashback"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Travel",
                     selected =
-                        selectedInterest == "Travel",
+                        filters.interest == "Travel",
                     onClick = {
-                        selectedInterest = "Travel"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Travel"
+                            )
+                        )
                     }
                 )
             }
@@ -328,27 +355,39 @@ fun CreditCardFilterScreen(
                 FilterChip(
                     text = "Rewards",
                     selected =
-                        selectedInterest == "Rewards",
+                        filters.interest == "Rewards",
                     onClick = {
-                        selectedInterest = "Rewards"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Rewards"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Petrol",
                     selected =
-                        selectedInterest == "Petrol",
+                        filters.interest == "Petrol",
                     onClick = {
-                        selectedInterest = "Petrol"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Petrol"
+                            )
+                        )
                     }
                 )
 
                 FilterChip(
                     text = "Dining",
                     selected =
-                        selectedInterest == "Dining",
+                        filters.interest == "Dining",
                     onClick = {
-                        selectedInterest = "Dining"
+                        onFiltersChange(
+                            filters.copy(
+                                interest = "Dining"
+                            )
+                        )
                     }
                 )
             }
