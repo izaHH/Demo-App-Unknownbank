@@ -44,6 +44,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardReviewScreen(
+    applicationData: CreditCardApplicationData,
     onBack: () -> Unit,
     onEditPersonal: () -> Unit,
     onNext: () -> Unit
@@ -228,6 +229,7 @@ fun CreditCardReviewScreen(
             ) {
 
                 PersonalDetailsReviewCard(
+                    applicationData = applicationData,
                     onEdit = onEditPersonal
                 )
             }
@@ -284,6 +286,7 @@ fun CreditCardReviewScreen(
 
 @Composable
 private fun PersonalDetailsReviewCard(
+    applicationData: CreditCardApplicationData,
     onEdit: () -> Unit
 ) {
 
@@ -430,57 +433,58 @@ private fun PersonalDetailsReviewCard(
 
         ReviewDetail(
             label = "Title",
-            value = "MS / PUAN"
+            value = applicationData.title
         )
 
         ReviewDetail(
             label = "Name",
-            value = "Farah Amira Ali"
+            value = applicationData.fullName
         )
 
         ReviewDetail(
             label = "IC No.",
-            value = "851010145640"
+            value = applicationData.icNumber
         )
 
         ReviewDetail(
             label = "Date of Birth",
-            value = "10-10-1985"
+            value = applicationData.dateOfBirth
         )
 
         ReviewDetail(
             label = "Email",
-            value = "farah.amira@gmail.com"
+            value = applicationData.email
         )
 
         ReviewDetail(
             label = "Mobile No.",
-            value = "012-2500440"
+            value =
+                "${applicationData.phoneCountryCode} ${applicationData.phoneNumber}"
         )
 
         ReviewDetail(
             label = "Name on Card",
-            value = "Farah Amira Ali"
+            value = applicationData.nameOnCard
         )
 
         ReviewDetail(
             label = "Education",
-            value = "Degree"
+            value = applicationData.education
         )
 
         ReviewDetail(
             label = "Gender",
-            value = "Female"
+            value = applicationData.gender
         )
 
         ReviewDetail(
             label = "Race",
-            value = "Malay"
+            value = applicationData.race
         )
 
         ReviewDetail(
             label = "Marital Status",
-            value = "Married",
+            value = applicationData.maritalStatus,
             addBottomSpacing = false
         )
     }

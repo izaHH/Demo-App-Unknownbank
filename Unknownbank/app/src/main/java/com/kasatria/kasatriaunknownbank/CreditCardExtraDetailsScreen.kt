@@ -44,39 +44,13 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardExtraDetailsScreen(
+    applicationData: CreditCardApplicationData,
+    onApplicationDataChange: (CreditCardApplicationData) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
 
-    var monthlyIncome by rememberSaveable {
-        mutableStateOf("12,000")
-    }
 
-    var monthlyCommitments by rememberSaveable {
-        mutableStateOf("5,860")
-    }
-
-    var retirementIncome by rememberSaveable {
-        mutableStateOf("Rental Income")
-    }
-
-    var statementDelivery by rememberSaveable {
-        mutableStateOf("Email")
-    }
-
-    var collectionState by rememberSaveable {
-        mutableStateOf(
-            "Wilayah Persekutuan Kuala Lumpur"
-        )
-    }
-
-    var collectionDistrict by rememberSaveable {
-        mutableStateOf("Kuala Lumpur")
-    }
-
-    var branch by rememberSaveable {
-        mutableStateOf("Bangsar")
-    }
 
 
     Box(
@@ -277,10 +251,14 @@ fun CreditCardExtraDetailsScreen(
                         "Monthly Net Income (RM)",
 
                     value =
-                        monthlyIncome,
+                        applicationData.monthlyNetIncome,
 
                     onValueChange = {
-                        monthlyIncome = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                monthlyNetIncome = it
+                            )
+                        )
                     }
                 )
 
@@ -290,10 +268,14 @@ fun CreditCardExtraDetailsScreen(
                         "Other Monthly Commitments (RM)",
 
                     value =
-                        monthlyCommitments,
+                        applicationData.monthlyCommitments,
 
                     onValueChange = {
-                        monthlyCommitments = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                monthlyCommitments = it
+                            )
+                        )
                     }
                 )
 
@@ -303,7 +285,7 @@ fun CreditCardExtraDetailsScreen(
                         "Source of Income After Retirement",
 
                     value =
-                        retirementIncome,
+                        applicationData.retirementIncomeSource,
 
                     options = listOf(
                         "Rental Income",
@@ -315,7 +297,11 @@ fun CreditCardExtraDetailsScreen(
                     ),
 
                     onSelected = {
-                        retirementIncome = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                retirementIncomeSource = it
+                            )
+                        )
                     }
                 )
 
@@ -325,7 +311,7 @@ fun CreditCardExtraDetailsScreen(
                         "Send My Statement to",
 
                     value =
-                        statementDelivery,
+                        applicationData.statementDelivery,
 
                     options = listOf(
                         "Email",
@@ -333,7 +319,11 @@ fun CreditCardExtraDetailsScreen(
                     ),
 
                     onSelected = {
-                        statementDelivery = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                statementDelivery = it
+                            )
+                        )
                     }
                 )
 
@@ -343,7 +333,7 @@ fun CreditCardExtraDetailsScreen(
                         "Card Collection State",
 
                     value =
-                        collectionState,
+                        applicationData.collectionState,
 
                     options = listOf(
                         "Wilayah Persekutuan Kuala Lumpur",
@@ -354,7 +344,11 @@ fun CreditCardExtraDetailsScreen(
                     ),
 
                     onSelected = {
-                        collectionState = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                collectionState = it
+                            )
+                        )
                     }
                 )
 
@@ -364,7 +358,7 @@ fun CreditCardExtraDetailsScreen(
                         "Card Collection District",
 
                     value =
-                        collectionDistrict,
+                        applicationData.collectionDistrict,
 
                     options = listOf(
                         "Kuala Lumpur",
@@ -374,7 +368,11 @@ fun CreditCardExtraDetailsScreen(
                     ),
 
                     onSelected = {
-                        collectionDistrict = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                collectionDistrict = it
+                            )
+                        )
                     }
                 )
 
@@ -383,7 +381,7 @@ fun CreditCardExtraDetailsScreen(
                     label =
                         "Select Branch",
 
-                    value = branch,
+                    value = applicationData.collectionBranch,
 
                     options = listOf(
                         "Bangsar",
@@ -393,7 +391,11 @@ fun CreditCardExtraDetailsScreen(
                     ),
 
                     onSelected = {
-                        branch = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                collectionBranch = it
+                            )
+                        )
                     }
                 )
             }

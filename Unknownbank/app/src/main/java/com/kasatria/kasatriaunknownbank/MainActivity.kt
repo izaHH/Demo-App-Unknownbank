@@ -717,6 +717,11 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_EXTRA_DETAILS -> {
 
                     CreditCardExtraDetailsScreen(
+                        applicationData = applicationData,
+
+                        onApplicationDataChange = {
+                            applicationData = it
+                        },
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
                         },
@@ -730,6 +735,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_REVIEW -> {
 
                     CreditCardReviewScreen(
+                        applicationData = applicationData,
+
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_EXTRA_DETAILS
                         },
