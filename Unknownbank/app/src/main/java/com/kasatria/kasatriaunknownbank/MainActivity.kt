@@ -100,6 +100,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import androidx.compose.ui.graphics.Brush
+
 private const val TAG = "MainActivity"
 
 class MyCustomWebViewClient(
@@ -1100,9 +1102,6 @@ fun UnknownbankBottomNavigation(
                 )
                 .fillMaxWidth()
                 .height(84.dp)
-                .shadow(
-                    elevation = 4.dp
-                )
                 .background(
                     Color.White
                 )
@@ -1165,7 +1164,9 @@ private fun BottomNavigationItem(
 
     Column(
         modifier = Modifier
-            .width(64.dp)
+            .width(
+                if (isScan) 80.dp else 64.dp
+            )
             .clickable(
                 onClick = onClick
             ),
@@ -1176,66 +1177,66 @@ private fun BottomNavigationItem(
 
         if (isScan) {
 
-            /*
-             * Raised middle Scan button
-             */
-
             Box(
                 modifier = Modifier
-                    .offset(
-                        y = (-5).dp
-                    )
-                    .size(57.dp)
-                    .shadow(
-                        elevation = 10.dp,
-                        shape = CircleShape,
-                        ambientColor = Color(0xFF0DCBFF),
-                        spotColor = Color(0xFF0DCBFF)
-                    )
-                    .background(
-                        color =
-                            Color.White,
-
-                        shape =
-                            CircleShape
-                    ),
-
-                contentAlignment =
-                    Alignment.Center
+                    .offset(y = (-12).dp)
+                    .width(80.dp)
+                    .height(78.dp)
             ) {
 
-                Image(
-                    painter =
-                        painterResource(
+                // Ambient blue glow
+                Box(
+                    modifier = Modifier
+                        .offset(y = (-4).dp)
+                        .size(80.dp)
+                        .align(Alignment.TopCenter)
+                        .background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    Color(0x660DCBFF),
+                                    Color(0x220DCBFF),
+                                    Color.Transparent
+                                )
+                            ),
+                            shape = CircleShape
+                        )
+                )
+
+                // Scan button
+                Box(
+                    modifier = Modifier
+                        .size(57.dp)
+                        .align(Alignment.TopCenter)
+                        .shadow(
+                            elevation = 6.dp,
+                            shape = CircleShape
+                        )
+                        .background(
+                            color = Color.White,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Image(
+                        painter = painterResource(
                             id = icon
                         ),
+                        contentDescription = label,
+                        modifier = Modifier.size(57.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
 
-                    contentDescription =
-                        label,
-
-                    modifier =
-                        Modifier.size(
-                            100.dp
-                        )
-//                      ,
-//                    contentScale = ContentScale.Fit
+                // Scan label
+                Text(
+                    text = "Scan",
+                    fontSize = 11.sp,
+                    color = Color(0xFFA3A3A3),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
                 )
             }
-
-            Text(
-                text = label,
-
-                fontSize = 11.sp,
-
-                color =
-                    Color(0xFFA3A3A3),
-
-                modifier =
-                    Modifier.offset(
-                        y = (-10).dp
-                    )
-            )
-
         } else {
 
             Spacer(

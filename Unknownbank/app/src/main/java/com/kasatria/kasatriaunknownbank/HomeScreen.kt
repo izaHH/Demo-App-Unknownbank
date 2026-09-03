@@ -50,6 +50,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.material.icons.filled.VisibilityOff
 
 
 @Composable
@@ -167,7 +169,36 @@ fun HomeScreen(
                     Arrangement.spacedBy(15.dp)
             ) {
 
-                AccountSummaryCard()
+                when (selectedCategory) {
+
+                    "Accounts" -> {
+                        AccountSummaryCard(
+                            accountName = "Bank Basic Account",
+                            balance = "RM 5,000.00"
+                        )
+                    }
+
+                    "Credit Card" -> {
+                        AccountSummaryCard(
+                            accountName = "Bank World Mastercard",
+                            balance = "RM 2,450.00"
+                        )
+                    }
+
+                    "Loan" -> {
+                        AccountSummaryCard(
+                            accountName = "Personal Loan",
+                            balance = "RM 18,500.00"
+                        )
+                    }
+
+                    "Investment" -> {
+                        AccountSummaryCard(
+                            accountName = "Investment Account",
+                            balance = "RM 12,300.00"
+                        )
+                    }
+                }
 
                 // Second account card visible partially
                 // in the Figma design
@@ -274,7 +305,14 @@ private fun HomeCategoryChip(
 }
 
 @Composable
-private fun AccountSummaryCard() {
+private fun AccountSummaryCard(
+    accountName: String,
+    balance: String
+) {
+
+    var isBalanceVisible by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     val cardShape =
         RoundedCornerShape(12.dp)
@@ -328,7 +366,7 @@ private fun AccountSummaryCard() {
          */
 
         Text(
-            text = "Bank Basic Account",
+            text = accountName,
             modifier = Modifier.offset(
                 x = 74.dp,
                 y = 20.dp
@@ -389,21 +427,29 @@ private fun AccountSummaryCard() {
 
         IconButton(
             onClick = {
-                // We'll wire balance
-                // visibility later.
+                isBalanceVisible = !isBalanceVisible
             },
 
             modifier = Modifier
-                .offset(
-                    x = 300.dp,
-                    y = 21.dp
+                .align(Alignment.TopEnd)
+                .padding(
+                    top = 12.dp,
+                    end = 12.dp
                 )
+//                .offset(
+//                    x = 300.dp,
+//                    y = 21.dp
+//                )
                 .size(48.dp)
         ) {
 
             Icon(
                 imageVector =
-                    Icons.Default.Visibility,
+                    if (isBalanceVisible) {
+                        Icons.Default.Visibility
+                    } else {
+                        Icons.Default.VisibilityOff
+                    },
 
                 contentDescription =
                     "Show account balance",
@@ -439,7 +485,12 @@ private fun AccountSummaryCard() {
          */
 
         Text(
-            text = "RM 5,000.00",
+            text =
+                if (isBalanceVisible) {
+                    balance
+                } else {
+                    "••••••••"
+                },
 
             modifier = Modifier
                 .align(Alignment.BottomEnd)
