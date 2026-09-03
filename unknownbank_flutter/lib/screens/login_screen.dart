@@ -82,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: IconButton(
-                            onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                             icon: const Icon(
                               Icons.close,
                               size: 18,
@@ -222,10 +224,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 if (!mounted) return;
 
-                                Navigator.of(context).pushReplacement(
+                                Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (_) => const MainShell(),
                                   ),
+                                  (route) => false,
                                 );
                               }
                             : null,

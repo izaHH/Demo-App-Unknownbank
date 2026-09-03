@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
-import 'screens/login_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
+import 'screens/username_entry_screen.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -11,6 +13,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseAnalytics.instance
+    .setAnalyticsCollectionEnabled(false);
 
   runApp(const UnknownBankApp());
 }
@@ -24,9 +29,7 @@ class UnknownBankApp extends StatelessWidget {
       title: 'Unknownbank',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const LoginScreen(
-        username: 'watermelon1234',
-      ),
+      home: const UsernameEntryScreen(),
     );
   }
 }
