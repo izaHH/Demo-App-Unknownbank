@@ -60,15 +60,24 @@ fun CreditCardDetailScreen(
          * =================================
          */
 
+        val heroImage =
+            product.heroImageRes
+                ?: product.imageRes
+
         Image(
             painter = painterResource(
-                id = product.heroImageRes
+                id = heroImage
             ),
             contentDescription = product.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(420.dp),
-            contentScale = ContentScale.Crop
+            contentScale =
+                if (product.heroImageRes != null) {
+                    ContentScale.Crop
+                } else {
+                    ContentScale.Fit
+                }
         )
 
 

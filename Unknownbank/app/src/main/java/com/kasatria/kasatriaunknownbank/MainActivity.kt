@@ -774,6 +774,32 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             val eventCategory = "Credit Card - ${selectedProduct.name} - Application Success"
                             val screenName = "Credit Card | ${selectedProduct.name} | Application Success"
 
+                            val productProperties = mutableMapOf<String, Any>(
+                                "event_category" to eventCategory,
+                                "event_action" to "Credit Card Application Success",
+                                "event_label" to "Application Success",
+                                "product_name" to selectedProduct.name,
+                                "product_category" to selectedProduct.category,
+                                "product_type" to selectedProduct.type,
+                                "product_banking_category" to selectedProduct.bankingCategory,
+                                "product_card_type" to selectedProduct.cardType
+                            )
+
+                            if (selectedProduct.benefit.isNotBlank()) {
+                                productProperties["product_benefit"] =
+                                    selectedProduct.benefit
+                            }
+
+                            if (selectedProduct.tier.isNotBlank()) {
+                                productProperties["product_card_tiers"] =
+                                    selectedProduct.tier
+                            }
+
+                            if (selectedProduct.interest.isNotBlank()) {
+                                productProperties["product_card_interest"] =
+                                    selectedProduct.interest
+                            }
+
                             //firebase
                             analytics.logEvent("screen_view"){
                                 param("screen_name", screenName)
@@ -792,35 +818,11 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                                 param("product_card_interest",selectedProduct.interest)
 
                             //VWOInsights.sendCustomEvent
-                                VWOInsights.sendCustomEvent("card_application_success", mapOf(
-                                    "event_category" to eventCategory,
-                                    "event_action" to "Credit Card Application Success",
-                                    "event_label" to "Application Success",
-                                    "product_name" to selectedProduct.name,
-                                    "product_category" to selectedProduct.category,
-                                    "product_type" to selectedProduct.type,
-                                    "product_banking_category" to selectedProduct.bankingCategory,
-                                    "product_benefit" to selectedProduct.benefit,
-                                    "product_card_type" to selectedProduct.cardType,
-                                    "product_card_tiers" to selectedProduct.tier,
-                                    "product_card_interest" to selectedProduct.interest
-                                ))
+                                VWOInsights.sendCustomEvent("card_application_success", productProperties)
 
                             //Amplitude Track
                                 UnknownbankApplication.amplitude.track(
-                                    "card_application_success",mapOf(
-                                        "event_category" to eventCategory,
-                                        "event_action" to "Credit Card Application Success",
-                                        "event_label" to "Application Success",
-                                        "product_name" to selectedProduct.name,
-                                        "product_category" to selectedProduct.category,
-                                        "product_type" to selectedProduct.type,
-                                        "product_banking_category" to selectedProduct.bankingCategory,
-                                        "product_benefit" to selectedProduct.benefit,
-                                        "product_card_type" to selectedProduct.cardType,
-                                        "product_card_tiers" to selectedProduct.tier,
-                                        "product_card_interest" to selectedProduct.interest
-                                    )
+                                    "card_application_success", productProperties
                                 )
                             }
                         }

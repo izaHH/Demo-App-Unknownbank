@@ -226,12 +226,11 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Gold\nMastercard",
 
-                    enabled = false
-//                    onClick ={
-//                        onCardSelected(
-//                            CreditCardProducts.BankWorldMastercard
-//                        )
-//                    }
+                    onClick ={
+                        onCardSelected(
+                            CreditCardProducts.BankGoldMastercard
+                        )
+                    }
 
                 )
 
@@ -243,12 +242,11 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Woman\nMastercard",
 
-                    enabled = false
-//                    onClick ={
-//                        onCardSelected(
-//                            CreditCardProducts.BankWorldMastercard
-//                        )
-//                    }
+                    onClick = {
+                        onCardSelected(
+                            CreditCardProducts.BankWomanMastercard
+                        )
+                    }
                 )
 
 
@@ -258,12 +256,12 @@ fun CreditCardSelectionScreen(
 
                     name =
                         "Bank Platinum\nIslamic Mastercard",
-                    enabled = false
-//                    onClick ={
-//                        onCardSelected(
-//                            CreditCardProducts.BankWorldMastercard
-//                        )
-//                    }
+
+                    onClick ={
+                        onCardSelected(
+                            CreditCardProducts.BankPlatinumIslamicMastercard
+                        )
+                    }
                 )
 
 
