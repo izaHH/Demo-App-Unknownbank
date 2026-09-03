@@ -620,6 +620,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
                         onCardSelected = { product ->
                             selectedProduct = product
+                            applicationData = CreditCardApplicationData()
                             currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
                         onFilter = {
@@ -791,10 +792,14 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                     CreditCardApprovalScreen(
 
                         onClose = {
+                            applicationData = CreditCardApplicationData()
+                            selectedProduct = CreditCardProducts.BankWorldMastercard
                             currentDestination = AppDestinations.HOME
                         },
 
                         onBackToHome = {
+                            applicationData = CreditCardApplicationData()
+                            selectedProduct = CreditCardProducts.BankWorldMastercard
                             currentDestination = AppDestinations.HOME
                         },
 
