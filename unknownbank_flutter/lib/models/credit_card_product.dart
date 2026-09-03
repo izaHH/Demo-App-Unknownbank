@@ -1,12 +1,10 @@
 class CreditCardBenefit {
   final String image;
   final String text;
-  final List<CreditCardBenefit> featuredBenefits;
 
   const CreditCardBenefit({
     required this.image,
     required this.text,
-    required this.featuredBenefits,
   });
 }
 
@@ -22,6 +20,8 @@ class CreditCardProduct {
   final String annualFee;
   final String description;
 
+  final List<CreditCardBenefit> featuredBenefits;
+
   const CreditCardProduct({
     required this.name,
     required this.bankingCategory,
@@ -32,6 +32,7 @@ class CreditCardProduct {
     required this.minIncome,
     required this.annualFee,
     required this.description,
+    required this.featuredBenefits,
   });
 }
 

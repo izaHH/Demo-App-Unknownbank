@@ -5,6 +5,16 @@ import 'home_screen.dart';
 import 'apply_screen.dart';
 import 'credit_card_selection_screen.dart';
 import 'credit_card_detail_screen.dart';
+import 'credit_card_requirements_screen.dart';
+import '../models/credit_card_application_data.dart';
+import 'credit_card_personal_details_screen.dart';
+import 'credit_card_about_you_screen.dart';
+import 'credit_card_job_details_screen.dart';
+import 'credit_card_extra_details_screen.dart';
+import 'credit_card_review_screen.dart';
+import 'credit_card_almost_there_screen.dart';
+import 'credit_card_upload_screen.dart';
+import 'credit_card_approval_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -15,6 +25,34 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int selectedIndex = 0;
+
+  CreditCardApplicationData applicationData =
+    const CreditCardApplicationData();
+
+  final String applicationReference =
+    '21092484852030';  
+
+  String formatApplicationDate(DateTime date) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  final day =
+      date.day.toString().padLeft(2, '0');
+
+  return '$day ${months[date.month - 1]} ${date.year}';
+}  
 
   Widget _currentScreen() {
     switch (selectedIndex) {
@@ -84,21 +122,183 @@ class _MainShellState extends State<MainShell> {
                     MaterialPageRoute(
                       builder: (_) => CreditCardDetailScreen(
                         product: product,
-                        onApplyNow: () {
-                          debugPrint(
-                            'Apply Now: ${product.name}',
-                          );
-                        },
+                      onApplyNow: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                CreditCardRequirementsScreen(
+                              productName: product.name,
+                              onNext: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        CreditCardPersonalDetailsScreen(
+                                      productName: product.name,
+                                      applicationData: applicationData,
+
+                                      onApplicationDataChange:
+                                          (updatedData) {
+                                        setState(() {
+                                          applicationData = updatedData;
+                                        });
+                                      },
+
+                                          onNext: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    CreditCardAboutYouScreen(
+                                                  productName: product.name,
+                                                  applicationData: applicationData,
+
+                                                  onApplicationDataChange:
+                                                      (updatedData) {
+                                                    setState(() {
+                                                      applicationData = updatedData;
+                                                    });
+                                                  },
+
+                                                  onNext: () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            CreditCardJobDetailsScreen(
+                                                          productName: product.name,
+                                                          applicationData: applicationData,
+
+                                                          onApplicationDataChange:
+                                                              (updatedData) {
+                                                            setState(() {
+                                                              applicationData = updatedData;
+                                                            });
+                                                          },
+
+                                                          onNext: () {
+                                                            Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    CreditCardExtraDetailsScreen(
+                                                                  productName: product.name,
+                                                                  applicationData: applicationData,
+
+                                                                  onApplicationDataChange:
+                                                                      (updatedData) {
+                                                                    setState(() {
+                                                                      applicationData = updatedData;
+                                                                    });
+                                                                  },
+
+                                                                  onNext: () {
+                                                                    Navigator.of(context).push(
+                                                                      MaterialPageRoute(
+                                                                        builder: (_) =>
+                                                                            CreditCardReviewScreen(
+                                                                          productName: product.name,
+                                                                          applicationData: applicationData,
+
+                                                                          onApplicationDataChange:
+                                                                              (updatedData) {
+                                                                            setState(() {
+                                                                              applicationData = updatedData;
+                                                                            });
+                                                                          },
+
+                                                                          onNext: () {
+                                                                            Navigator.of(context).push(
+                                                                              MaterialPageRoute(
+                                                                                builder: (_) =>
+                                                                                    CreditCardAlmostThereScreen(
+                                                                                  product: product,
+                                                                                  applicationReference:
+                                                                                      applicationReference,
+
+                                                                                  onUploadNow: () {
+                                                                                    Navigator.of(context).push(
+                                                                                      MaterialPageRoute(
+                                                                                        builder: (_) =>
+                                                                                            CreditCardUploadDocumentsScreen(
+                                                                                          productName: product.name,
+                                                                                          applicationData: applicationData,
+
+                                                                                          onApplicationDataChange:
+                                                                                              (updatedData) {
+                                                                                            setState(() {
+                                                                                              applicationData = updatedData;
+                                                                                            });
+                                                                                          },
+
+                                                                                            onUploadNow: () {
+                                                                                              final applicationDate =
+                                                                                                  formatApplicationDate(
+                                                                                                DateTime.now(),
+                                                                                              );
+
+                                                                                              Navigator.of(context).push(
+                                                                                                MaterialPageRoute(
+                                                                                                  builder: (_) =>
+                                                                                                      CreditCardApprovalScreen(
+                                                                                                    applicationReference:
+                                                                                                        applicationReference,
+                                                                                                    applicationDate:
+                                                                                                        applicationDate,
+
+                                                                                                    onScreenShown: () {
+                                                                                                      debugPrint(
+                                                                                                        'Approval shown: ${product.name}',
+                                                                                                      );
+                                                                                                    },
+
+                                                                                                    onClose: () {
+                                                                                                      Navigator.of(context).popUntil(
+                                                                                                        (route) => route.isFirst,
+                                                                                                      );
+                                                                                                    },
+
+                                                                                                    onBackToHome: () {
+                                                                                                      Navigator.of(context).popUntil(
+                                                                                                        (route) => route.isFirst,
+                                                                                                      );
+                                                                                                    },
+                                                                                                  ),
+                                                                                                ),
+                                                                                              );
+                                                                                            },
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
                       ),
                     ),
                   );
                 },
-
-                  onFilter: () {
-                    debugPrint(
-                      'Credit Card Filter clicked',
-                    );
-                  },
                 ),
               ),
             );

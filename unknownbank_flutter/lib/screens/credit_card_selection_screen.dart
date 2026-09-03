@@ -1,23 +1,50 @@
 import 'package:flutter/material.dart';
 
+import '../models/credit_card_filters.dart';
 import '../models/credit_card_product.dart';
 import '../theme/app_colors.dart';
+import 'credit_card_filter_screen.dart';
 
-class CreditCardSelectionScreen extends StatelessWidget {
+class CreditCardSelectionScreen extends StatefulWidget {
   final VoidCallback onBack;
   final ValueChanged<CreditCardProduct> onCardSelected;
-  final VoidCallback? onFilter;
 
   const CreditCardSelectionScreen({
     super.key,
     required this.onBack,
     required this.onCardSelected,
-    this.onFilter,
   });
 
   @override
+  State<CreditCardSelectionScreen> createState() =>
+      _CreditCardSelectionScreenState();
+}
+
+class _CreditCardSelectionScreenState
+    extends State<CreditCardSelectionScreen> {
+  CreditCardFilters filters = const CreditCardFilters();
+
+  Future<void> _openFilters() async {
+    final result =
+        await Navigator.of(context).push<CreditCardFilters>(
+      MaterialPageRoute(
+        builder: (_) => CreditCardFilterScreen(
+          filters: filters,
+        ),
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        filters = result;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final products = CreditCardProducts.all;
+    final products =
+        filters.apply(CreditCardProducts.all);
 
     return Scaffold(
       body: Stack(
@@ -41,15 +68,13 @@ class CreditCardSelectionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 8,
-                            ),
+                            padding:
+                                const EdgeInsets.only(left: 8),
                             child: IconButton(
-                              onPressed: onBack,
+                              onPressed: widget.onBack,
                               icon: const Icon(
                                 Icons.arrow_back,
-                                color:
-                                    AppColors.textPrimary,
+                                color: AppColors.textPrimary,
                               ),
                             ),
                           ),
@@ -58,11 +83,9 @@ class CreditCardSelectionScreen extends StatelessWidget {
                         const Text(
                           'Credit Card',
                           style: TextStyle(
-                            color:
-                                AppColors.textPrimary,
                             fontSize: 13,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ],
@@ -70,11 +93,11 @@ class CreditCardSelectionScreen extends StatelessWidget {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 13,
-                      bottom: 19,
+                    padding: const EdgeInsets.fromLTRB(
+                      20,
+                      13,
+                      20,
+                      19,
                     ),
                     child: Row(
                       children: [
@@ -82,28 +105,58 @@ class CreditCardSelectionScreen extends StatelessWidget {
                           child: Text(
                             'Select the right credit card for you',
                             style: TextStyle(
-                              color:
-                                  AppColors.textPrimary,
                               fontSize: 15,
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
                             ),
                           ),
                         ),
 
                         InkWell(
-                          onTap: onFilter,
+                          onTap: _openFilters,
                           borderRadius:
                               BorderRadius.circular(20),
                           child: SizedBox(
                             width: 40,
                             height: 40,
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/credit_card_filter.png',
-                                width: 36,
-                                height: 36,
-                              ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Image.asset(
+                                    'assets/images/credit_card_filter.png',
+                                    width: 36,
+                                    height: 36,
+                                  ),
+                                ),
+
+                                if (filters.activeCount > 0)
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      width: 17,
+                                      height: 17,
+                                      alignment:
+                                          Alignment.center,
+                                      decoration:
+                                          const BoxDecoration(
+                                        color:
+                                            AppColors.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        '${filters.activeCount}',
+                                        style:
+                                            const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight:
+                                              FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         ),
@@ -112,36 +165,56 @@ class CreditCardSelectionScreen extends StatelessWidget {
                   ),
 
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                     ),
-                    child: Column(
-                      children: [
-                        for (
-                          int i = 0;
-                          i < products.length;
-                          i++
-                        ) ...[
-                          _CreditCardOption(
-                            product: products[i],
-                            onTap: () {
-                              onCardSelected(
-                                products[i],
-                              );
-                            },
-                          ),
+                    child: products.isEmpty
+                        ? const Padding(
+                            padding:
+                                EdgeInsets.only(top: 60),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'No credit cards found',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight:
+                                        FontWeight.bold,
+                                  ),
+                                ),
 
-                          if (i !=
-                              products.length - 1)
-                            const SizedBox(
-                              height: 15,
+                                SizedBox(height: 8),
+
+                                Text(
+                                  'Try changing your search or filters.',
+                                ),
+                              ],
                             ),
-                        ],
+                          )
+                        : Column(
+                            children: [
+                              for (int i = 0;
+                                  i < products.length;
+                                  i++) ...[
+                                _CreditCardOption(
+                                  product: products[i],
+                                  onTap: () {
+                                    widget.onCardSelected(
+                                      products[i],
+                                    );
+                                  },
+                                ),
 
-                        const SizedBox(height: 30),
-                      ],
-                    ),
+                                if (i !=
+                                    products.length - 1)
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                              ],
+
+                              const SizedBox(height: 30),
+                            ],
+                          ),
                   ),
                 ],
               ),
@@ -200,10 +273,10 @@ class _CreditCardOption extends StatelessWidget {
               child: Text(
                 product.name,
                 style: const TextStyle(
-                  color: Color(0xFF333333),
                   fontSize: 15,
                   height: 1.13,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
