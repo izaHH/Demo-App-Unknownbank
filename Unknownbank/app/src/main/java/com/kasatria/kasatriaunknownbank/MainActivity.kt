@@ -486,6 +486,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
     var applicationReference by rememberSaveable { mutableStateOf("21092484852030") }
     var applicationDate by rememberSaveable { mutableStateOf("") }
     var creditCardFilters by remember { mutableStateOf(CreditCardFilters()) }
+    var editingReviewSection by rememberSaveable { mutableStateOf<String?>(null) }
     var webViewUrl by rememberSaveable { mutableStateOf("") }
     var showWebView by rememberSaveable { mutableStateOf(false) }
 
@@ -631,7 +632,27 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                                     "category" to category
                                 )
                             )
+                        },
+                        onQuickActionSelected = { action ->
+                            analytics.logEvent("home_quick_action_click") {
+                                param("quick_action", action)
+                            }
+
+                            VWOInsights.sendCustomEvent(
+                                "home_quick_action_click",
+                                mapOf(
+                                    "quick_action" to action
+                                )
+                            )
+
+                            UnknownbankApplication.amplitude.track(
+                                "home_quick_action_click",
+                                mapOf(
+                                    "quick_action" to action
+                                )
+                            )
                         }
+
                     )
                 }
 
@@ -762,12 +783,25 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             applicationData = it
                         },
                         onBack = {
-                            currentDestination =
-                                AppDestinations.CREDIT_CARD_ABOUT_YOU
+                            if (editingReviewSection == "job") {
+                                editingReviewSection = null
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REVIEW
+                            } else {
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_ABOUT_YOU
+                            }
                         },
 
                         onNext = {
-                            currentDestination = AppDestinations.CREDIT_CARD_EXTRA_DETAILS
+                            if (editingReviewSection == "job") {
+                                editingReviewSection = null
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REVIEW
+                            } else {
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_EXTRA_DETAILS
+                            }
                         }
                     )
                 }
@@ -782,11 +816,20 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             applicationData = it
                         },
                         onBack = {
-                            currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
+                            if (editingReviewSection == "extra") {
+                                editingReviewSection = null
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REVIEW
+                            } else {
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_JOB_DETAILS
+                            }
                         },
 
                         onNext = {
-                            currentDestination = AppDestinations.CREDIT_CARD_REVIEW
+                            editingReviewSection = null
+                            currentDestination =
+                                AppDestinations.CREDIT_CARD_REVIEW
                         }
                     )
                 }
@@ -802,6 +845,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
 
                         onEditPersonal = {
+                            editingReviewSection = "personal"
                             currentDestination = AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
                         },
 
@@ -809,9 +853,11 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             currentDestination = AppDestinations.CREDIT_CARD_ALMOST_THERE
                         },
                         onEditJob = {
+                            editingReviewSection = "job"
                             currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
                         },
                         onEditExtraDetails = {
+                            editingReviewSection = "extra"
                             currentDestination = AppDestinations.CREDIT_CARD_EXTRA_DETAILS
                         }
                     )

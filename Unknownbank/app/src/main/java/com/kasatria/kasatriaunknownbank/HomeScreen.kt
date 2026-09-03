@@ -59,7 +59,8 @@ fun HomeScreen(
     onApply: () -> Unit,
     onCreditCardClick: () -> Unit,
     onShop: () -> Unit,
-    onCategorySelected: (String) -> Unit
+    onCategorySelected: (String) -> Unit,
+    onQuickActionSelected: (String) -> Unit
 ) {
 
     var selectedCategory by rememberSaveable {
@@ -602,23 +603,35 @@ private fun QuickActionsSection(
 
             QuickActionItem(
                 icon = R.drawable.quick_egold,
-                label = "e-Gold"
+                label = "e-Gold",
+                onClick = {
+                    onQuickActionSelected("e-Gold")
+                }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_pay_bills,
-                label = "Pay Bills"
+                label = "Pay Bills",
+                onClick = {
+                    onQuickActionSelected("Pay Bills")
+                }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_insurance,
-                label = "Insurance"
+                label = "Insurance",
+                onClick = {
+                    onQuickActionSelected("Insurance")
+                }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_apply,
                 label = "Apply",
-                onClick = onApply
+                onClick = {
+                    onQuickActionSelected("Apply")
+                    onApply()
+                }
             )
         }
 
@@ -645,18 +658,27 @@ private fun QuickActionsSection(
 
             QuickActionItem(
                 icon = R.drawable.quick_cash_loan,
-                label = "Cash Loan"
+                label = "Cash Loan",
+                onClick = {
+                    onQuickActionSelected("Cash Loan")
+                }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_etrade,
-                label = "e-Trade"
+                label = "e-Trade",
+                onClick = {
+                    onQuickActionSelected("e-Trade")
+                }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_eshop,
                 label = "e-Shop",
-                onClick = onShop
+                onClick = {
+                    onQuickActionSelected("e-Shop")
+                    onShop()
+                }
             )
 
             QuickActionItem(

@@ -506,7 +506,12 @@ private fun PersonalDetailsReviewCard(
 
         ReviewDetail(
             label = "Marital Status",
-            value = applicationData.maritalStatus,
+            value = applicationData.maritalStatus
+        )
+
+        ReviewDetail(
+            label = "Mother's Name",
+            value = applicationData.motherName,
             addBottomSpacing = false
         )
     }
