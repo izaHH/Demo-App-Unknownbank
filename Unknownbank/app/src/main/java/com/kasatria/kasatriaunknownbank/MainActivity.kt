@@ -96,6 +96,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.sp
 import fme.e
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "MainActivity"
 
@@ -477,7 +480,9 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
     val analytics = Firebase.analytics
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
     var selectedProduct by remember { mutableStateOf(CreditCardProducts.BankWorldMastercard) }
-    var applicationData by remember {mutableStateOf(CreditCardApplicationData())}
+    var applicationData by remember { mutableStateOf(CreditCardApplicationData()) }
+    var applicationReference by rememberSaveable { mutableStateOf("21092484852030") }
+    var applicationDate by rememberSaveable { mutableStateOf("") }
     var webViewUrl by rememberSaveable { mutableStateOf("") }
     var showWebView by rememberSaveable { mutableStateOf(false) }
 
@@ -621,6 +626,19 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         onCardSelected = { product ->
                             selectedProduct = product
                             applicationData = CreditCardApplicationData()
+
+                            applicationReference =
+                                (10_000_000_000_000L..
+                                        99_999_999_999_999L)
+                                    .random()
+                                    .toString()
+
+                            applicationDate =
+                                SimpleDateFormat(
+                                    "MMM d, yyyy",
+                                    Locale.US
+                                ).format(Date())
+
                             currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
                         onFilter = {
@@ -768,6 +786,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                     CreditCardAlmostThereScreen(
                         product = selectedProduct,
+                        applicationReference = applicationReference,
+
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_REVIEW
                         },
@@ -775,6 +795,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         onUploadNow = {
                             currentDestination = AppDestinations.CREDIT_CARD_UPLOAD_DOCUMENTS
                         }
+
                     )
                 }
 
@@ -782,6 +803,12 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                     CreditCardUploadDocumentsScreen(
                         productName = selectedProduct.name,
+                        applicationData = applicationData,
+
+                        onApplicationDataChange = {
+                            applicationData = it
+                        },
+
                         onBack = {
                             currentDestination =
                                 AppDestinations.CREDIT_CARD_ALMOST_THERE
@@ -796,6 +823,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_APPROVED -> {
 
                     CreditCardApprovalScreen(
+                        applicationReference = applicationReference,
+                        applicationDate = applicationDate,
 
                         onClose = {
                             applicationData = CreditCardApplicationData()

@@ -43,6 +43,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 @Composable
 fun CreditCardAlmostThereScreen(
     product: CreditCardProduct,
+    applicationReference: String,
     onBack: () -> Unit,
     onUploadNow: () -> Unit
 ) {
@@ -183,6 +184,7 @@ fun CreditCardAlmostThereScreen(
 
             ApplicationReferenceCard(
                 product = product,
+                applicationReference = applicationReference,
                 modifier = Modifier.padding(
                     horizontal = 20.dp
                 )
@@ -346,7 +348,7 @@ private fun ApplicationReferenceCard(
 
 
             Text(
-                text = "21092484852030",
+                text = applicationReference,
 
                 color = Color.Black,
 

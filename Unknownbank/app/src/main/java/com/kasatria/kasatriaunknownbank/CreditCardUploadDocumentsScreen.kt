@@ -58,38 +58,15 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 @Composable
 fun CreditCardUploadDocumentsScreen(
     productName: String,
+    applicationData: CreditCardApplicationData,
+    onApplicationDataChange: (CreditCardApplicationData) -> Unit,
     onBack: () -> Unit,
     onUploadNow: () -> Unit
 ) {
 
     val context = LocalContext.current
 
-    var nricFront by rememberSaveable {
-        mutableStateOf(
-            "farah_amira_ID_front.pdf"
-        )
-    }
 
-    var nricBack by rememberSaveable {
-        mutableStateOf(
-            "farah_amira_ID_back.pdf"
-        )
-    }
-
-    var salaryDocument by rememberSaveable {
-        mutableStateOf(
-            "farah_amira_PaySlip.pdf"
-        )
-    }
-
-    /*
-     * Additional documents added
-     * through "+ Add More Document".
-     */
-    val additionalDocuments =
-        remember {
-            mutableStateListOf<String>()
-        }
 
 
     /*
@@ -120,20 +97,36 @@ fun CreditCardUploadDocumentsScreen(
             when (selectedTarget) {
 
                 0 -> {
-                    nricFront = fileName
+                    onApplicationDataChange(
+                        applicationData.copy(
+                            nricFrontDocument = fileName
+                        )
+                    )
                 }
 
                 1 -> {
-                    nricBack = fileName
+                    onApplicationDataChange(
+                        applicationData.copy(
+                            nricBackDocument = fileName
+                        )
+                    )
                 }
 
                 2 -> {
-                    salaryDocument = fileName
+                    onApplicationDataChange(
+                        applicationData.copy(
+                            salaryDocument = fileName
+                        )
+                    )
                 }
 
                 3 -> {
-                    additionalDocuments.add(
-                        fileName
+                    onApplicationDataChange(
+                        applicationData.copy(
+                            additionalDocuments =
+                                applicationData.additionalDocuments +
+                                        fileName
+                        )
                     )
                 }
             }
@@ -338,8 +331,7 @@ fun CreditCardUploadDocumentsScreen(
                     title =
                         "NRIC Front",
 
-                    fileName =
-                        nricFront,
+                    fileName = applicationData.nricFrontDocument,
 
                     onClick = {
                         openDocumentPicker(0)
@@ -351,8 +343,7 @@ fun CreditCardUploadDocumentsScreen(
                     title =
                         "NRIC Back",
 
-                    fileName =
-                        nricBack,
+                    fileName = applicationData.nricBackDocument,
 
                     onClick = {
                         openDocumentPicker(1)
@@ -364,8 +355,7 @@ fun CreditCardUploadDocumentsScreen(
                     title =
                         "Salary Slip / EA Form / EPF Statement",
 
-                    fileName =
-                        salaryDocument,
+                    fileName = applicationData.salaryDocument,
 
                     onClick = {
                         openDocumentPicker(2)
@@ -373,7 +363,7 @@ fun CreditCardUploadDocumentsScreen(
                 )
 
 
-                additionalDocuments
+                applicationData.additionalDocuments
                     .forEachIndexed {
                             index,
                             fileName ->

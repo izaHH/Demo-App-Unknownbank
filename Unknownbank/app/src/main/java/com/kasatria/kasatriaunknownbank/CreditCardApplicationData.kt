@@ -36,5 +36,11 @@ data class CreditCardApplicationData(
     val collectionState: String =
         "Wilayah Persekutuan Kuala Lumpur",
     val collectionDistrict: String = "Kuala Lumpur",
-    val collectionBranch: String = "Bangsar"
+    val collectionBranch: String = "Bangsar",
+
+    //Screen 13 - Credit Card Details
+    val nricFrontDocument: String = "farah_amira_ID_front.pdf",
+    val nricBackDocument: String = "farah_amira_ID_back.pdf",
+    val salaryDocument: String = "farah_amira_PaySlip.pdf",
+    val additionalDocuments: List<String> = emptyList()
 )

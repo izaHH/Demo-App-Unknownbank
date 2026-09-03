@@ -37,6 +37,8 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardApprovalScreen(
+    applicationReference: String,
+    applicationDate: String,
     onClose: () -> Unit,
     onBackToHome: () -> Unit,
     onScreenShown: () -> Unit = {}
@@ -248,8 +250,7 @@ fun CreditCardApprovalScreen(
 
 
                     Text(
-                        text =
-                            "21092484852030",
+                        text = applicationReference,
 
                         color =
                             Color(0xFF191C1E),
@@ -305,8 +306,7 @@ fun CreditCardApprovalScreen(
 
 
                     Text(
-                        text =
-                            "Aug 24, 2026",
+                        text = applicationDate,
 
                         color =
                             Color(0xFF333333),
