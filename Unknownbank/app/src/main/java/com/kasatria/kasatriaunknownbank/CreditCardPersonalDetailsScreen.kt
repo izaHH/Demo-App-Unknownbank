@@ -273,8 +273,10 @@ fun CreditCardPersonalDetailsScreen(
                     value = applicationData.icNumber,
 
                     onValueChange = {
-                        applicationData.copy(
-                            icNumber = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                icNumber = it
+                            )
                         )
                     }
                 )

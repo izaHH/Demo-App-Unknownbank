@@ -241,7 +241,8 @@ fun HomeScreen(
                     .align(Alignment.TopStart)
                     .padding(top = 420.dp),
                 onApply = onApply,
-                onShop = onShop
+                onShop = onShop,
+                onQuickActionSelected = onQuickActionSelected
             )
 
             /*
@@ -537,7 +538,8 @@ private fun AccountSummaryCard(
 private fun QuickActionsSection(
     modifier: Modifier = Modifier,
     onApply: () -> Unit,
-    onShop: () -> Unit
+    onShop: () -> Unit,
+    onQuickActionSelected: (String) -> Unit
 ) {
 
     Column(
@@ -677,13 +679,15 @@ private fun QuickActionsSection(
                 label = "e-Shop",
                 onClick = {
                     onQuickActionSelected("e-Shop")
-                    onShop()
                 }
             )
 
             QuickActionItem(
                 icon = R.drawable.quick_more,
-                label = "More"
+                label = "More",
+                onClick = {
+                    onQuickActionSelected("More")
+                }
             )
         }
     }

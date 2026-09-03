@@ -743,6 +743,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 }
 
                 AppDestinations.CREDIT_CARD_PERSONAL_DETAILS -> {
+
                     CreditCardPersonalDetailsScreen(
                         productName = selectedProduct.name,
                         applicationData = applicationData,
@@ -750,7 +751,14 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             applicationData = it
                         },
                         onBack = {
-                            currentDestination = AppDestinations.CREDIT_CARD_REQUIREMENTS
+                            if (editingReviewSection == "personal") {
+                                editingReviewSection = null
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REVIEW
+                            } else {
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REQUIREMENTS
+                            }
                         },
                         onNext = {
                             currentDestination = AppDestinations.CREDIT_CARD_ABOUT_YOU
@@ -759,6 +767,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 }
 
                 AppDestinations.CREDIT_CARD_ABOUT_YOU -> {
+
                     CreditCardAboutYouScreen(
                         productName = selectedProduct.name,
                         applicationData = applicationData,
@@ -769,7 +778,14 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             currentDestination = AppDestinations.CREDIT_CARD_PERSONAL_DETAILS
                         },
                         onNext = {
-                            currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
+                            if (editingReviewSection == "personal") {
+                                editingReviewSection = null
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_REVIEW
+                            } else {
+                                currentDestination =
+                                    AppDestinations.CREDIT_CARD_JOB_DETAILS
+                            }
                         }
                     )
                 }
