@@ -605,6 +605,32 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                     HomeScreen(
                         onApply = {
                             currentDestination = AppDestinations.CREDIT_CARD
+                        },
+                        onCreditCardClick = {
+                            currentDestination = AppDestinations.CREDIT_CARD_LIST
+                        },
+                        onShop = {
+                            currentDestination = AppDestinations.STORE
+                        },
+                        onCategorySelected = { category ->
+                            //firebase
+                            analytics.logEvent("home_category_click") {
+                                param("category", category)
+                            }
+                            //VWO
+                            VWOInsights.sendCustomEvent(
+                                "home_category_click",
+                                mapOf(
+                                    "category" to category
+                                )
+                            )
+                            //Amplitude
+                            UnknownbankApplication.amplitude.track(
+                                "home_category_click",
+                                mapOf(
+                                    "category" to category
+                                )
+                            )
                         }
                     )
                 }

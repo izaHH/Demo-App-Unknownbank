@@ -56,7 +56,10 @@ import androidx.compose.material.icons.filled.VisibilityOff
 
 @Composable
 fun HomeScreen(
-    onApply: () -> Unit
+    onApply: () -> Unit,
+    onCreditCardClick: () -> Unit,
+    onShop: () -> Unit,
+    onCategorySelected: (String) -> Unit
 ) {
 
     var selectedCategory by rememberSaveable {
@@ -142,6 +145,7 @@ fun HomeScreen(
 
                         onClick = {
                             selectedCategory = category
+                            onCategorySelected(category)
                         }
                     )
                 }
@@ -174,6 +178,8 @@ fun HomeScreen(
                     "Accounts" -> {
                         AccountSummaryCard(
                             accountName = "Bank Basic Account",
+                            accountNumber = "566-5",
+                            balanceLabel = "Available balance",
                             balance = "RM 5,000.00"
                         )
                     }
@@ -181,13 +187,18 @@ fun HomeScreen(
                     "Credit Card" -> {
                         AccountSummaryCard(
                             accountName = "Bank World Mastercard",
-                            balance = "RM 2,450.00"
+                            accountNumber = "884-2",
+                            balanceLabel = "Outstanding balance",
+                            balance = "RM 2,450.00",
+                            onClick = onCreditCardClick
                         )
                     }
 
                     "Loan" -> {
                         AccountSummaryCard(
                             accountName = "Personal Loan",
+                            accountNumber = "291-8",
+                            balanceLabel = "Outstanding amount",
                             balance = "RM 18,500.00"
                         )
                     }
@@ -195,6 +206,8 @@ fun HomeScreen(
                     "Investment" -> {
                         AccountSummaryCard(
                             accountName = "Investment Account",
+                            accountNumber = "731-4",
+                            balanceLabel = "Current value",
                             balance = "RM 12,300.00"
                         )
                     }
@@ -202,15 +215,17 @@ fun HomeScreen(
 
                 // Second account card visible partially
                 // in the Figma design
-                Box(
-                    modifier = Modifier
-                        .width(290.dp)
-                        .height(160.dp)
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                )
+                if(selectedCategory == "Accounts") {
+                    Box(
+                        modifier = Modifier
+                            .width(290.dp)
+                            .height(160.dp)
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                    )
+                }
             }
 
             /*
@@ -224,7 +239,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(top = 420.dp),
-                onApply = onApply
+                onApply = onApply,
+                onShop = onShop
             )
 
             /*
@@ -307,7 +323,11 @@ private fun HomeCategoryChip(
 @Composable
 private fun AccountSummaryCard(
     accountName: String,
-    balance: String
+    accountNumber: String,
+    balanceLabel: String,
+    balance: String,
+    onClick: () -> Unit = {}
+
 ) {
 
     var isBalanceVisible by rememberSaveable {
@@ -328,6 +348,9 @@ private fun AccountSummaryCard(
             .background(
                 color = Color.White,
                 shape = cardShape
+            )
+            .clickable(
+                onClick = onClick
             )
     ) {
 
@@ -414,7 +437,7 @@ private fun AccountSummaryCard(
             )
 
             Text(
-                text = "566-5",
+                text = accountNumber,
                 color = Color(0xFF666666),
                 fontSize = 13.sp
             )
@@ -468,7 +491,7 @@ private fun AccountSummaryCard(
          */
 
         Text(
-            text = "Available balance",
+            text = balanceLabel,
 
             modifier = Modifier.offset(
                 x = 20.dp,
@@ -512,7 +535,8 @@ private fun AccountSummaryCard(
 @Composable
 private fun QuickActionsSection(
     modifier: Modifier = Modifier,
-    onApply: () -> Unit
+    onApply: () -> Unit,
+    onShop: () -> Unit
 ) {
 
     Column(
@@ -631,7 +655,8 @@ private fun QuickActionsSection(
 
             QuickActionItem(
                 icon = R.drawable.quick_eshop,
-                label = "e-Shop"
+                label = "e-Shop",
+                onClick = onShop
             )
 
             QuickActionItem(
