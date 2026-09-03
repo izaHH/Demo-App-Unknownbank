@@ -477,6 +477,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
     val analytics = Firebase.analytics
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
     var selectedProduct by remember { mutableStateOf(CreditCardProducts.BankWorldMastercard) }
+    var applicationData by remember {mutableStateOf(CreditCardApplicationData())}
     var webViewUrl by rememberSaveable { mutableStateOf("") }
     var showWebView by rememberSaveable { mutableStateOf(false) }
 
@@ -667,6 +668,10 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_PERSONAL_DETAILS -> {
                     CreditCardPersonalDetailsScreen(
+                        applicationData = applicationData,
+                        onApplicationDataChanged = {
+                            applicationData = it
+                        },
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_REQUIREMENTS
                         },
@@ -804,27 +809,44 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                             analytics.logEvent("screen_view"){
                                 param("screen_name", screenName)
                             }
-                            analytics.logEvent("card_application_success"){
+                            analytics.logEvent(
+                                "card_application_success"
+                            ) {
                                 param("event_category", eventCategory)
                                 param("event_action", "Credit Card Application Success")
-                                param("event_label","Application Success")
+                                param("event_label", "Application Success")
                                 param("product_name", selectedProduct.name)
-                                param("product_category",selectedProduct.category)
-                                param("product_type",selectedProduct.type)
-                                param("product_banking_category",selectedProduct.bankingCategory)
-                                param("product_benefit",selectedProduct.benefit)
-                                param("product_card_type",selectedProduct.cardType)
-                                param("product_card_tiers",selectedProduct.tier)
-                                param("product_card_interest",selectedProduct.interest)
+                                param("product_category", selectedProduct.category)
+                                param("product_type", selectedProduct.type)
+                                param("product_banking_category", selectedProduct.bankingCategory)
+                                param("product_card_type", selectedProduct.cardType)
 
-                            //VWOInsights.sendCustomEvent
-                                VWOInsights.sendCustomEvent("card_application_success", productProperties)
+                                if (selectedProduct.benefit.isNotBlank()) {
+                                    param("product_benefit", selectedProduct.benefit)
+                                }
 
-                            //Amplitude Track
-                                UnknownbankApplication.amplitude.track(
-                                    "card_application_success", productProperties
-                                )
+                                if (selectedProduct.tier.isNotBlank()) {
+                                    param("product_card_tiers", selectedProduct.tier)
+                                }
+
+                                if (selectedProduct.interest.isNotBlank()) {
+                                    param("product_card_interest", selectedProduct.interest)
+                                }
                             }
+
+
+                            // VWO — OUTSIDE Firebase block
+
+                            VWOInsights.sendCustomEvent(
+                                "card_application_success",productProperties
+                            )
+
+
+                            // Amplitude — OUTSIDE Firebase block
+
+                            UnknownbankApplication.amplitude.track(
+                                "card_application_success",productProperties
+                            )
                         }
                     )
                 }

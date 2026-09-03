@@ -48,38 +48,11 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardPersonalDetailsScreen(
+    applicationData: CreditCardApplicationData,
+    onApplicationDataChange: (CreditCardApplicationData) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
-
-    var title by rememberSaveable {
-        mutableStateOf("MS / PUAN")
-    }
-
-    var fullName by rememberSaveable {
-        mutableStateOf("Farah Amira Ali")
-    }
-
-    var icNumber by rememberSaveable {
-        mutableStateOf("851010145640")
-    }
-
-    var dateOfBirth by rememberSaveable {
-        mutableStateOf("10-10-1985")
-    }
-
-    var email by rememberSaveable {
-        mutableStateOf("farah.amira@gmail.com")
-    }
-
-    var countryCode by rememberSaveable {
-        mutableStateOf("+60")
-    }
-
-    var mobileNumber by rememberSaveable {
-        mutableStateOf("122500440")
-    }
-
 
     Box(
         modifier = Modifier
@@ -262,13 +235,17 @@ fun CreditCardPersonalDetailsScreen(
 
                 SelectionField(
                     label = "Title",
-                    value = title,
+                    value = applicationData.title,
                     options = listOf(
                         "MS / PUAN",
                         "MR / ENCIK"
                     ),
                     onSelected = {
-                        title = it
+                       onApplicationDataChange(
+                           applicationData.copy(
+                               title = it
+                           )
+                       )
                     }
                 )
 
@@ -277,10 +254,14 @@ fun CreditCardPersonalDetailsScreen(
                     label =
                         "Full Name (Completes as per NRIC)",
 
-                    value = fullName,
+                    value = applicationData.fullName,
 
                     onValueChange = {
-                        fullName = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                fullName = it
+                            )
+                        )
                     }
                 )
 
@@ -288,10 +269,12 @@ fun CreditCardPersonalDetailsScreen(
                 PersonalField(
                     label = "IC No.",
 
-                    value = icNumber,
+                    value = applicationData.icNumber,
 
                     onValueChange = {
-                        icNumber = it
+                        applicationData.copy(
+                            icNumber = it
+                        )
                     }
                 )
 
@@ -299,10 +282,14 @@ fun CreditCardPersonalDetailsScreen(
                 PersonalField(
                     label = "Date of birth",
 
-                    value = dateOfBirth,
+                    value = applicationData.dateOfBirth,
 
                     onValueChange = {
-                        dateOfBirth = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                dateOfBirth = it
+                            )
+                        )
                     }
                 )
 
@@ -310,10 +297,14 @@ fun CreditCardPersonalDetailsScreen(
                 PersonalField(
                     label = "Email",
 
-                    value = email,
+                    value = applicationData.email,
 
                     onValueChange = {
-                        email = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                email = it
+                            )
+                        )
                     }
                 )
 
@@ -346,7 +337,7 @@ fun CreditCardPersonalDetailsScreen(
                     ) {
 
                         SelectionBox(
-                            value = countryCode,
+                            value = applicationData.phoneCountryCode,
 
                             options = listOf(
                                 "+60",
@@ -355,7 +346,11 @@ fun CreditCardPersonalDetailsScreen(
                             ),
 
                             onSelected = {
-                                countryCode = it
+                                onApplicationDataChange(
+                                    applicationData.copy(
+                                        phoneCountryCode = it
+                                    )
+                                )
                             },
 
                             modifier =
@@ -364,10 +359,14 @@ fun CreditCardPersonalDetailsScreen(
 
 
                         BasicFormField(
-                            value = mobileNumber,
+                            value = applicationData.phoneNumber,
 
                             onValueChange = {
-                                mobileNumber = it
+                                onApplicationDataChange(
+                                    applicationData.copy(
+                                        phoneNumber = it
+                                    )
+                                )
                             },
 
                             modifier =
