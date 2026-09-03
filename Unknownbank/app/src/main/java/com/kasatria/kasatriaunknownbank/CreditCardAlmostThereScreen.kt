@@ -293,6 +293,7 @@ fun CreditCardAlmostThereScreen(
 @Composable
 private fun ApplicationReferenceCard(
     product: CreditCardProduct,
+    applicationReference: String,
     modifier: Modifier = Modifier
 ) {
 
