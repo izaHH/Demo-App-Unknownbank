@@ -699,6 +699,10 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_JOB_DETAILS -> {
 
                     CreditCardJobDetailsScreen(
+                        applicationData = applicationData,
+                        onApplicationDataChange = {
+                            applicationData = it
+                        },
                         onBack = {
                             currentDestination =
                                 AppDestinations.CREDIT_CARD_ABOUT_YOU

@@ -44,37 +44,13 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardJobDetailsScreen(
+    applicationData: CreditCardApplicationData,
+    onApplicationDataChange: (CreditCardApplicationData) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
 
-    var employerName by rememberSaveable {
-        mutableStateOf("Star Trading")
-    }
 
-    var occupation by rememberSaveable {
-        mutableStateOf("Sales Manager")
-    }
-
-    var sector by rememberSaveable {
-        mutableStateOf("Logistic")
-    }
-
-    var employmentType by rememberSaveable {
-        mutableStateOf("Private Employed")
-    }
-
-    var businessClassification by rememberSaveable {
-        mutableStateOf("Private Limited")
-    }
-
-    var serviceYears by rememberSaveable {
-        mutableStateOf("10")
-    }
-
-    var serviceMonths by rememberSaveable {
-        mutableStateOf("6")
-    }
 
 
     Box(
@@ -269,16 +245,20 @@ fun CreditCardJobDetailsScreen(
 
                 JobTextField(
                     label = "Employer Name",
-                    value = employerName,
+                    value = applicationData.employerName,
                     onValueChange = {
-                        employerName = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                employerName = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Occupation",
-                    value = occupation,
+                    value = applicationData.occupation,
 
                     options = listOf(
                         "Sales Manager",
@@ -290,14 +270,18 @@ fun CreditCardJobDetailsScreen(
                     ),
 
                     onSelected = {
-                        occupation = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                occupation = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Sector",
-                    value = sector,
+                    value = applicationData.sector,
 
                     options = listOf(
                         "Logistic",
@@ -310,14 +294,18 @@ fun CreditCardJobDetailsScreen(
                     ),
 
                     onSelected = {
-                        sector = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                sector = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Employment Type",
-                    value = employmentType,
+                    value = applicationData.employmentType,
 
                     options = listOf(
                         "Private Employed",
@@ -326,14 +314,18 @@ fun CreditCardJobDetailsScreen(
                     ),
 
                     onSelected = {
-                        employmentType = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                employmentType = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Business Classification",
-                    value = businessClassification,
+                    value = applicationData.businessClassification,
 
                     options = listOf(
                         "Private Limited",
@@ -344,14 +336,18 @@ fun CreditCardJobDetailsScreen(
                     ),
 
                     onSelected = {
-                        businessClassification = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                businessClassification = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Length of Service (Year)",
-                    value = serviceYears,
+                    value = applicationData.yearsOfService,
 
                     options =
                         (0..30).map {
@@ -359,14 +355,18 @@ fun CreditCardJobDetailsScreen(
                         },
 
                     onSelected = {
-                        serviceYears = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                yearsOfService = it
+                            )
+                        )
                     }
                 )
 
 
                 JobSelectionField(
                     label = "Length of Service (Months)",
-                    value = serviceMonths,
+                    value = applicationData.monthsOfService,
 
                     options =
                         (0..11).map {
@@ -374,7 +374,11 @@ fun CreditCardJobDetailsScreen(
                         },
 
                     onSelected = {
-                        serviceMonths = it
+                        onApplicationDataChange(
+                            applicationData.copy(
+                                monthsOfService = it
+                            )
+                        )
                     }
                 )
             }
