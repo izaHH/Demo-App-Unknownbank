@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
+import androidx.compose.foundation.shape.CircleShape
 
 
 @Composable
@@ -50,6 +51,13 @@ fun CreditCardSelectionScreen(
 
     val filteredProducts =
         CreditCardProducts.all.applyFilters(filters)
+
+    val activeFilterCount =
+        listOf(
+            filters.searchText.isNotBlank(),
+            filters.tier != "All",
+            filters.interest != "All"
+        ).count { it }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -168,25 +176,48 @@ fun CreditCardSelectionScreen(
                 )
 
 
-                Image(
-                    painter =
-                        painterResource(
-                            id =
-                                R.drawable.credit_card_filter
-                        ),
-
-                    contentDescription =
-                        "Filter credit cards",
-
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(40.dp)
                         .clickable {
                             onFilter()
-                        },
+                        }
+                ) {
 
-                    contentScale =
-                        ContentScale.Fit
-                )
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.credit_card_filter
+                        ),
+                        contentDescription = "Filter credit cards",
+                        modifier = Modifier
+                            .size(36.dp)
+                            .align(Alignment.Center),
+                        contentScale = ContentScale.Fit
+                    )
+
+                    if (activeFilterCount > 0) {
+
+                        Box(
+                            modifier = Modifier
+                                .size(17.dp)
+                                .background(
+                                    color = Color(0xFF0066B8),
+                                    shape = CircleShape
+                                )
+                                .align(Alignment.TopEnd),
+
+                            contentAlignment = Alignment.Center
+                        ) {
+
+                            Text(
+                                text = activeFilterCount.toString(),
+                                color = Color.White,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
             }
 
 

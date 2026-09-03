@@ -47,17 +47,34 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 
 @Composable
 fun CreditCardFilterScreen(
     filters: CreditCardFilters,
-    resultCount: Int,
     onFiltersChange: (CreditCardFilters) -> Unit,
     onBack: () -> Unit,
     onShowResults: () -> Unit
 ) {
 
+    var draftFilters by remember(filters) {
+        mutableStateOf(filters)
+    }
 
+    val draftResultCount =
+        CreditCardProducts.all
+            .applyFilters(draftFilters)
+            .size
+
+    val hasDraftFilters =
+        draftFilters != CreditCardFilters()
+
+    val hasFilterChanges =
+        draftFilters != filters
 
     Box(
         modifier = Modifier
@@ -125,13 +142,20 @@ fun CreditCardFilterScreen(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .padding(end = 20.dp)
-                        .clickable {
-                            onFiltersChange(
+                        .clickable(
+                            enabled = hasDraftFilters
+                        ) {
+                            draftFilters =
                                 CreditCardFilters()
-                            )
                         },
 
-                    color = PrimaryBlue,
+                    color =
+                        if (hasDraftFilters) {
+                            PrimaryBlue
+                        } else {
+                            Color(0xFFAAAAAA)
+                        },
+
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -156,16 +180,13 @@ fun CreditCardFilterScreen(
 
 
             SearchField(
-                value = filters.searchText,
-
+                value = draftFilters.searchText,
                 onValueChange = {
-                    onFiltersChange(
-                        filters.copy(
+                    draftFilters =
+                        draftFilters.copy(
                             searchText = it
                         )
-                    )
                 },
-
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .fillMaxWidth()
@@ -218,26 +239,21 @@ fun CreditCardFilterScreen(
 
                 listOf(
                     "All",
-                    "Islamic",
-                    "Cashback",
-                    "Travel",
-                    "Rewards",
-                    "Petrol",
-                    "Dining"
-                ).forEach { interest ->
+                    "Silver",
+                    "Gold",
+                    "World",
+                    "Platinum"
+                ).forEach { tier ->
 
                     FilterChip(
-                        text = interest,
-
+                        text = tier,
                         selected =
-                            filters.interest == interest,
-
+                            draftFilters.tier == tier,
                         onClick = {
-                            onFiltersChange(
-                                filters.copy(
-                                    interest = interest
+                            draftFilters =
+                                draftFilters.copy(
+                                    tier = tier
                                 )
-                            )
                         }
                     )
                 }
@@ -278,63 +294,38 @@ fun CreditCardFilterScreen(
 
             Row(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(
+                        rememberScrollState()
+                    )
                     .padding(horizontal = 20.dp),
 
                 horizontalArrangement =
                     Arrangement.spacedBy(10.dp)
             ) {
 
-                FilterChip(
-                    text = "All",
-                    selected =
-                        filters.interest == "All",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "All"
-                            )
-                        )
-                    }
-                )
+                listOf(
+                    "All",
+                    "Islamic",
+                    "Cashback",
+                    "Travel",
+                    "Rewards",
+                    "Petrol",
+                    "Dining"
+                ).forEach { interest ->
 
-                FilterChip(
-                    text = "Islamic",
-                    selected =
-                        filters.interest == "Islamic",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Islamic"
-                            )
-                        )
-                    }
-                )
-
-                FilterChip(
-                    text = "Cashback",
-                    selected =
-                        filters.interest == "Cashback",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Cashback"
-                            )
-                        )
-                    }
-                )
-
-                FilterChip(
-                    text = "Travel",
-                    selected =
-                        filters.interest == "Travel",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Travel"
-                            )
-                        )
-                    }
-                )
+                    FilterChip(
+                        text = interest,
+                        selected =
+                            draftFilters.interest == interest,
+                        onClick = {
+                            draftFilters =
+                                draftFilters.copy(
+                                    interest = interest
+                                )
+                        }
+                    )
+                }
             }
 
 
@@ -346,50 +337,36 @@ fun CreditCardFilterScreen(
 
             Row(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(
+                        rememberScrollState()
+                    )
                     .padding(horizontal = 20.dp),
 
                 horizontalArrangement =
                     Arrangement.spacedBy(10.dp)
             ) {
 
-                FilterChip(
-                    text = "Rewards",
-                    selected =
-                        filters.interest == "Rewards",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Rewards"
-                            )
-                        )
-                    }
-                )
+                listOf(
+                    "All",
+                    "Silver",
+                    "Gold",
+                    "World",
+                    "Platinum"
+                ).forEach { tier ->
 
-                FilterChip(
-                    text = "Petrol",
-                    selected =
-                        filters.interest == "Petrol",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Petrol"
-                            )
-                        )
-                    }
-                )
-
-                FilterChip(
-                    text = "Dining",
-                    selected =
-                        filters.interest == "Dining",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                interest = "Dining"
-                            )
-                        )
-                    }
-                )
+                    FilterChip(
+                        text = tier,
+                        selected =
+                            draftFilters.tier == tier,
+                        onClick = {
+                            draftFilters =
+                                draftFilters.copy(
+                                    tier = tier
+                                )
+                        }
+                    )
+                }
             }
         }
 
@@ -401,8 +378,11 @@ fun CreditCardFilterScreen(
          */
 
         Button(
-            onClick = onShowResults,
-            enabled = resultCount > 0,
+            onClick = {
+                onFiltersChange(draftFilters)
+                onShowResults()
+            },
+            enabled = draftResultCount > 0 && hasFilterChanges,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
@@ -426,11 +406,11 @@ fun CreditCardFilterScreen(
 
             Text(
                 text =
-                    if (resultCount == 1) {
+                    if (draftResultCount == 1) {
                         "Show 1 Credit Card"
                     } else {
-                        "Show $resultCount Credit Cards"
-                    },
+                        "Show $draftResultCount Credit Cards"
+                    }
             )
         }
     }
