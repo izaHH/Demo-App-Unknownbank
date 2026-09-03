@@ -65,7 +65,7 @@ object CreditCardProducts {
         benefit = "",
         cardType = "Principal",
         tier = "Gold",
-        interest = "",
+        interest = "Rewards",
         imageRes = R.drawable.card_gold,
         heroImageRes = null,
 
@@ -97,7 +97,7 @@ object CreditCardProducts {
         benefit = "",
         cardType = "Principal",
         tier = "",
-        interest = "",
+        interest = "Cashback",
         imageRes = R.drawable.card_woman,
         heroImageRes = null,
 
@@ -151,5 +151,12 @@ object CreditCardProducts {
                 text = "Earn 5x\nReward Points"
             )
         )
+    )
+
+    val all = listOf(
+        BankWorldMastercard,
+        BankGoldMastercard,
+        BankWomanMastercard,
+        BankPlatinumIslamicMastercard
     )
 }

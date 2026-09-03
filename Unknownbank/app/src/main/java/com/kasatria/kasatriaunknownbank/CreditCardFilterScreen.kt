@@ -44,10 +44,14 @@ import com.kasatria.kasatriaunknownbank.ui.theme.PrimaryBlue
 import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
 import com.kasatria.kasatriaunknownbank.ui.theme.White
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+
 
 @Composable
 fun CreditCardFilterScreen(
     filters: CreditCardFilters,
+    resultCount: Int,
     onFiltersChange: (CreditCardFilters) -> Unit,
     onBack: () -> Unit,
     onShowResults: () -> Unit
@@ -112,6 +116,24 @@ fun CreditCardFilterScreen(
 
                     fontWeight =
                         FontWeight.Bold
+                )
+
+
+                Text(
+                    text = "Clear All",
+
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 20.dp)
+                        .clickable {
+                            onFiltersChange(
+                                CreditCardFilters()
+                            )
+                        },
+
+                    color = PrimaryBlue,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -184,63 +206,41 @@ fun CreditCardFilterScreen(
 
             Row(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(
+                        rememberScrollState()
+                    )
                     .padding(horizontal = 20.dp),
 
                 horizontalArrangement =
                     Arrangement.spacedBy(10.dp)
             ) {
 
-                FilterChip(
-                    text = "All",
-                    selected =
-                        filters.tier == "All",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                tier = "All"
-                            )
-                        )
-                    }
-                )
+                listOf(
+                    "All",
+                    "Islamic",
+                    "Cashback",
+                    "Travel",
+                    "Rewards",
+                    "Petrol",
+                    "Dining"
+                ).forEach { interest ->
 
-                FilterChip(
-                    text = "Silver",
-                    selected =
-                        filters.tier == "Silver",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                tier = "Silver"
-                            )
-                        )
-                    }
-                )
+                    FilterChip(
+                        text = interest,
 
-                FilterChip(
-                    text = "Gold",
-                    selected =
-                        filters.tier == "Gold",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                tier = "Gold"
-                            )
-                        )
-                    }
-                )
+                        selected =
+                            filters.interest == interest,
 
-                FilterChip(
-                    text = "Platinum",
-                    selected =
-                        filters.tier == "Platinum",
-                    onClick = {
-                        onFiltersChange(
-                            filters.copy(
-                                tier = "Platinum"
+                        onClick = {
+                            onFiltersChange(
+                                filters.copy(
+                                    interest = interest
+                                )
                             )
-                        )
-                    }
-                )
+                        }
+                    )
+                }
             }
 
 
@@ -402,7 +402,7 @@ fun CreditCardFilterScreen(
 
         Button(
             onClick = onShowResults,
-
+            enabled = resultCount > 0,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
@@ -425,12 +425,12 @@ fun CreditCardFilterScreen(
         ) {
 
             Text(
-                text = "Show 18 Credit Cards",
-
-                fontSize = 15.sp,
-
-                fontWeight =
-                    FontWeight.Bold
+                text =
+                    if (resultCount == 1) {
+                        "Show 1 Credit Card"
+                    } else {
+                        "Show $resultCount Credit Cards"
+                    },
             )
         }
     }

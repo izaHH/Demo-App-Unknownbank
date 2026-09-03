@@ -47,50 +47,9 @@ fun CreditCardSelectionScreen(
     onFilter: () -> Unit = {}
 ) {
 
-    val products = listOf(
-        CreditCardProducts.BankWorldMastercard,
-        CreditCardProducts.BankGoldMastercard,
-        CreditCardProducts.BankWomanMastercard,
-        CreditCardProducts.BankPlatinumIslamicMastercard
-    )
 
-    val filteredProducts = products.filter { product ->
-
-        val matchesSearch =
-            filters.searchText.isBlank() ||
-                    product.name.contains(
-                        filters.searchText,
-                        ignoreCase = true
-                    )
-
-        val matchesTier =
-            filters.tier == "All" ||
-                    product.tier.equals(
-                        filters.tier,
-                        ignoreCase = true
-                    )
-
-        val matchesInterest =
-            filters.interest == "All" ||
-                    when (filters.interest) {
-
-                        "Islamic" ->
-                            product.bankingCategory.equals(
-                                "Islamic",
-                                ignoreCase = true
-                            )
-
-                        else ->
-                            product.interest.equals(
-                                filters.interest,
-                                ignoreCase = true
-                            )
-                    }
-
-        matchesSearch &&
-                matchesTier &&
-                matchesInterest
-    }
+    val filteredProducts =
+        CreditCardProducts.all.applyFilters(filters)
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -250,16 +209,51 @@ fun CreditCardSelectionScreen(
                     )
             ) {
 
-                filteredProducts.forEach { product ->
+                if (filteredProducts.isEmpty()) {
 
-                    CreditCardOption(
-                        image = product.imageRes,
-                        name = product.name,
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 60.dp,
+                                start = 20.dp,
+                                end = 20.dp
+                            ),
+                        horizontalAlignment =
+                            Alignment.CenterHorizontally
+                    ) {
 
-                        onClick = {
-                            onCardSelected(product)
-                        }
-                    )
+                        Text(
+                            text = "No credit cards found",
+                            color = TextPrimary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(
+                            modifier = Modifier.height(8.dp)
+                        )
+
+                        Text(
+                            text = "Try changing your search or filters.",
+                            color = Color(0xFF666666),
+                            fontSize = 14.sp
+                        )
+                    }
+
+                } else {
+
+                    filteredProducts.forEach { product ->
+
+                        CreditCardOption(
+                            image = product.imageRes,
+                            name = product.name,
+
+                            onClick = {
+                                onCardSelected(product)
+                            }
+                        )
+                    }
                 }
 
 

@@ -596,6 +596,12 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
              * SCREEN CONTENT
              * =================================
              */
+            val allCreditCardProducts = CreditCardProducts.all
+
+            val filteredCreditCardCount =
+                CreditCardProducts.all
+                    .applyFilters(creditCardFilters)
+                    .size
 
             when (currentDestination) {
 
@@ -652,7 +658,12 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_FILTER -> {
                     CreditCardFilterScreen(
-                        //filters = creditCardFilters,
+                        filters = creditCardFilters,
+                        resultCount = filteredCreditCardCount,
+                        onFiltersChange = {
+                            creditCardFilters = it
+                        },
+
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_LIST
                         },
