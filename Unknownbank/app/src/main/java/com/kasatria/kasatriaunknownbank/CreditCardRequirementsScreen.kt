@@ -40,6 +40,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardRequirementsScreen(
+    productName: String,
     onBack: () -> Unit,
     onNext: () -> Unit
 ) {
@@ -103,7 +104,7 @@ fun CreditCardRequirementsScreen(
 
                 Text(
                     text =
-                        "Applying for Bank World Mastercard",
+                        "Applying for $productName",
 
                     modifier = Modifier
                         .align(Alignment.Center)

@@ -44,6 +44,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardReviewScreen(
+    productName: String,
     applicationData: CreditCardApplicationData,
     onBack: () -> Unit,
     onEditPersonal: () -> Unit,
@@ -109,7 +110,7 @@ fun CreditCardReviewScreen(
 
                 Text(
                     text =
-                        "Applying for Bank World Mastercard",
+                        "Applying for $productName",
 
                     modifier = Modifier
                         .align(Alignment.Center)

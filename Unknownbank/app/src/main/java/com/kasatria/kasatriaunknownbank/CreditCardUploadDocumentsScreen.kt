@@ -57,6 +57,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardUploadDocumentsScreen(
+    productName: String,
     onBack: () -> Unit,
     onUploadNow: () -> Unit
 ) {
@@ -232,7 +233,7 @@ fun CreditCardUploadDocumentsScreen(
 
                 Text(
                     text =
-                        "Applying for Bank World Mastercard",
+                        "Applying for $productName",
 
                     modifier = Modifier
                         .align(

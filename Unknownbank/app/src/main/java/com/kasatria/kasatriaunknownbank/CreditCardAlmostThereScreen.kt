@@ -42,6 +42,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardAlmostThereScreen(
+    product: CreditCardProduct,
     onBack: () -> Unit,
     onUploadNow: () -> Unit
 ) {
@@ -105,7 +106,7 @@ fun CreditCardAlmostThereScreen(
 
                 Text(
                     text =
-                        "Applying for Bank World Mastercard",
+                        "Applying for ${product.name}",
 
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -181,6 +182,7 @@ fun CreditCardAlmostThereScreen(
              */
 
             ApplicationReferenceCard(
+                product = product,
                 modifier = Modifier.padding(
                     horizontal = 20.dp
                 )
@@ -288,6 +290,7 @@ fun CreditCardAlmostThereScreen(
 
 @Composable
 private fun ApplicationReferenceCard(
+    product: CreditCardProduct,
     modifier: Modifier = Modifier
 ) {
 
@@ -382,24 +385,30 @@ private fun ApplicationReferenceCard(
          * Figma: 280 x 175
          */
 
+        val applicationImage =
+            if (product == CreditCardProducts.BankWorldMastercard) {
+                R.drawable.application_card_world
+            } else {
+                product.imageRes
+            }
+
         Image(
             painter = painterResource(
-                id =
-                    R.drawable.application_card_world
+                id = applicationImage
             ),
-
-            contentDescription =
-                "Bank World Mastercard",
-
+            contentDescription = product.name,
             modifier = Modifier
                 .width(280.dp)
                 .height(175.dp)
                 .align(
                     Alignment.CenterHorizontally
                 ),
-
             contentScale =
-                ContentScale.Crop
+                if (product == CreditCardProducts.BankWorldMastercard) {
+                    ContentScale.Crop
+                } else {
+                    ContentScale.Fit
+                }
         )
 
 
@@ -410,8 +419,7 @@ private fun ApplicationReferenceCard(
 
 
         Text(
-            text =
-                "Bank World Mastercard",
+            text = product.name,
 
             modifier =
                 Modifier.fillMaxWidth(),

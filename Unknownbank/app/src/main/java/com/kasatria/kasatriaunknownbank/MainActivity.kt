@@ -656,6 +656,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_REQUIREMENTS -> {
                     CreditCardRequirementsScreen(
+                        productName = selectedProduct.name,
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
@@ -668,6 +669,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_PERSONAL_DETAILS -> {
                     CreditCardPersonalDetailsScreen(
+                        productName = selectedProduct.name,
                         applicationData = applicationData,
                         onApplicationDataChange = {
                             applicationData = it
@@ -683,6 +685,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                 AppDestinations.CREDIT_CARD_ABOUT_YOU -> {
                     CreditCardAboutYouScreen(
+                        productName = selectedProduct.name,
                         applicationData = applicationData,
                         onApplicationDataChange = {
                             applicationData = it
@@ -699,6 +702,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_JOB_DETAILS -> {
 
                     CreditCardJobDetailsScreen(
+                        productName = selectedProduct.name,
                         applicationData = applicationData,
                         onApplicationDataChange = {
                             applicationData = it
@@ -717,6 +721,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_EXTRA_DETAILS -> {
 
                     CreditCardExtraDetailsScreen(
+                        productName = selectedProduct.name,
                         applicationData = applicationData,
 
                         onApplicationDataChange = {
@@ -735,6 +740,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_REVIEW -> {
 
                     CreditCardReviewScreen(
+                        productName = selectedProduct.name,
                         applicationData = applicationData,
 
                         onBack = {
@@ -754,6 +760,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_ALMOST_THERE -> {
 
                     CreditCardAlmostThereScreen(
+                        product = selectedProduct,
                         onBack = {
                             currentDestination = AppDestinations.CREDIT_CARD_REVIEW
                         },
@@ -767,6 +774,7 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                 AppDestinations.CREDIT_CARD_UPLOAD_DOCUMENTS -> {
 
                     CreditCardUploadDocumentsScreen(
+                        productName = selectedProduct.name,
                         onBack = {
                             currentDestination =
                                 AppDestinations.CREDIT_CARD_ALMOST_THERE
