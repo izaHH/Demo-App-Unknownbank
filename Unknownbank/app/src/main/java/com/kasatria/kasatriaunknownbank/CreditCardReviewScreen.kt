@@ -48,7 +48,9 @@ fun CreditCardReviewScreen(
     applicationData: CreditCardApplicationData,
     onBack: () -> Unit,
     onEditPersonal: () -> Unit,
-    onNext: () -> Unit
+    onNext: () -> Unit,
+    onEditJob: () -> Unit,
+    onEditExtraDetails: () -> Unit
 ) {
 
     Box(
@@ -231,7 +233,26 @@ fun CreditCardReviewScreen(
 
                 PersonalDetailsReviewCard(
                     applicationData = applicationData,
-                    onEdit = onEditPersonal
+                    onEdit = onEditPersonal,
+
+                )
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
+                JobDetailsReviewCard(
+                    applicationData = applicationData,
+                    onEdit = onEditJob
+                )
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
+                ExtraDetailsReviewCard(
+                    applicationData = applicationData,
+                    onEdit = onEditExtraDetails
                 )
             }
         }
@@ -491,6 +512,218 @@ private fun PersonalDetailsReviewCard(
     }
 }
 
+@Composable
+private fun JobDetailsReviewCard(
+    applicationData: CreditCardApplicationData,
+    onEdit: () -> Unit
+) {
+
+    val shape = RoundedCornerShape(12.dp)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 3.dp,
+                shape = shape
+            )
+            .background(
+                color = White,
+                shape = shape
+            )
+            .border(
+                width = 1.dp,
+                color = Color(0xFFEEEEEE),
+                shape = shape
+            )
+            .padding(17.dp)
+    ) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement =
+                Arrangement.SpaceBetween,
+            verticalAlignment =
+                Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "Job Details",
+                color = Color.Black,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "EDIT",
+                modifier = Modifier.clickable {
+                    onEdit()
+                },
+                color = PrimaryBlue,
+                fontSize = 12.sp,
+                letterSpacing = 0.6.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(9.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(
+                    Color(0xFFF2F4F6)
+                )
+        )
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        ReviewDetail(
+            label = "Employer Name",
+            value = applicationData.employerName
+        )
+
+        ReviewDetail(
+            label = "Occupation",
+            value = applicationData.occupation
+        )
+
+        ReviewDetail(
+            label = "Sector",
+            value = applicationData.sector
+        )
+
+        ReviewDetail(
+            label = "Employment Type",
+            value = applicationData.employmentType
+        )
+
+        ReviewDetail(
+            label = "Business Classification",
+            value = applicationData.businessClassification
+        )
+
+        ReviewDetail(
+            label = "Length of Service",
+            value =
+                "${applicationData.yearsOfService} years " +
+                        "${applicationData.monthsOfService} months",
+            addBottomSpacing = false
+        )
+    }
+}
+
+@Composable
+private fun ExtraDetailsReviewCard(
+    applicationData: CreditCardApplicationData,
+    onEdit: () -> Unit
+) {
+
+    val shape = RoundedCornerShape(12.dp)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 3.dp,
+                shape = shape
+            )
+            .background(
+                color = White,
+                shape = shape
+            )
+            .border(
+                width = 1.dp,
+                color = Color(0xFFEEEEEE),
+                shape = shape
+            )
+            .padding(17.dp)
+    ) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement =
+                Arrangement.SpaceBetween,
+            verticalAlignment =
+                Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "Extra Details",
+                color = Color.Black,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "EDIT",
+                modifier = Modifier.clickable {
+                    onEdit()
+                },
+                color = PrimaryBlue,
+                fontSize = 12.sp,
+                letterSpacing = 0.6.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(9.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(
+                    Color(0xFFF2F4F6)
+                )
+        )
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        ReviewDetail(
+            label = "Monthly Net Income",
+            value = "RM ${applicationData.monthlyNetIncome}"
+        )
+
+        ReviewDetail(
+            label = "Monthly Commitments",
+            value = "RM ${applicationData.monthlyCommitments}"
+        )
+
+        ReviewDetail(
+            label = "Retirement Income Source",
+            value = applicationData.retirementIncomeSource
+        )
+
+        ReviewDetail(
+            label = "Statement Delivery",
+            value = applicationData.statementDelivery
+        )
+
+        ReviewDetail(
+            label = "Collection State",
+            value = applicationData.collectionState
+        )
+
+        ReviewDetail(
+            label = "Collection District",
+            value = applicationData.collectionDistrict
+        )
+
+        ReviewDetail(
+            label = "Collection Branch",
+            value = applicationData.collectionBranch,
+            addBottomSpacing = false
+        )
+    }
+}
 
 @Composable
 private fun ReviewDetail(

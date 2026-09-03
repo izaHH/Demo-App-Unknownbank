@@ -754,6 +754,12 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
 
                         onNext = {
                             currentDestination = AppDestinations.CREDIT_CARD_ALMOST_THERE
+                        },
+                        onEditJob = {
+                            currentDestination = AppDestinations.CREDIT_CARD_JOB_DETAILS
+                        },
+                        onEditExtraDetails = {
+                            currentDestination = AppDestinations.CREDIT_CARD_EXTRA_DETAILS
                         }
                     )
                 }

@@ -307,40 +307,14 @@ fun CreditCardDetailScreen(
                     Arrangement.spacedBy(10.dp)
             ) {
 
-                BenefitCard(
-                    modifier =
-                        Modifier.weight(1f),
+                product.featuredBenefits.forEach { benefit ->
 
-                    icon =
-                        R.drawable.benefit_fee_waiver,
-
-                    text =
-                        "Annual Fee\nWaiver"
-                )
-
-
-                BenefitCard(
-                    modifier =
-                        Modifier.weight(1f),
-
-                    icon =
-                        R.drawable.benefit_cashback,
-
-                    text =
-                        "Up to 15%\nCashback"
-                )
-
-
-                BenefitCard(
-                    modifier =
-                        Modifier.weight(1f),
-
-                    icon =
-                        R.drawable.benefit_points,
-
-                    text =
-                        "Earn 5x\nPoints"
-                )
+                    BenefitCard(
+                        modifier = Modifier.weight(1f),
+                        icon = benefit.iconRes,
+                        text = benefit.text
+                    )
+                }
             }
         }
 
