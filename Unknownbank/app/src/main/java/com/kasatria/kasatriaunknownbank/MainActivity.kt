@@ -1030,12 +1030,14 @@ private fun BottomNavigationItem(
             Box(
                 modifier = Modifier
                     .offset(
-                        y = (-16).dp
+                        y = (-5).dp
                     )
                     .size(57.dp)
                     .shadow(
-                        elevation = 8.dp,
-                        shape = CircleShape
+                        elevation = 10.dp,
+                        shape = CircleShape,
+                        ambientColor = Color(0xFF0DCBFF),
+                        spotColor = Color(0xFF0DCBFF)
                     )
                     .background(
                         color =
@@ -1060,7 +1062,7 @@ private fun BottomNavigationItem(
 
                     modifier =
                         Modifier.size(
-                            100.dp
+                            57.dp
                         ),
                     contentScale = ContentScale.Fit
                 )
