@@ -1,5 +1,9 @@
 package com.kasatria.kasatriaunknownbank
 
+data class CreditCardBenefit(
+    val iconRes: Int,
+    val text: String
+)
 data class CreditCardProduct(
     val name: String,
     val category: String,
@@ -10,7 +14,13 @@ data class CreditCardProduct(
     val tier: String,
     val interest: String,
     val imageRes: Int,
-    val heroImageRes: Int?
+    val heroImageRes: Int?,
+
+    val minIncome: String,
+    val annualFee: String,
+    val description: String,
+    val featuredBenefits: List<CreditCardBenefit>
+
 )
 
 object CreditCardProducts {
@@ -25,7 +35,26 @@ object CreditCardProducts {
         tier = "World",
         interest = "Travel",
         imageRes = R.drawable.card_world,
-        heroImageRes = R.drawable.credit_card_world_hero
+        heroImageRes = R.drawable.credit_card_world_hero,
+
+        minIncome = "RM 100,000 per annum",
+        annualFee = "RM 10,000",
+        description = "Enjoy instant reward redemptions with Premier Travel Credit Card! " + "Get up to 5x reward points, complimentary travel insurance and " +
+            "annual passes to selected airport lounges.",
+        featuredBenefits = listOf(
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_fee_waiver,
+                text = "Annual Fee Waiver"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_cashback,
+                text = "Up to 15%\nCashback"
+            ),
+            CreditCardBenefit(
+                iconRes = R.drawable.benefit_points,
+                text = "Earn 5x\nReward Points"
+            )
+        )
     )
     val BankGoldMastercard = CreditCardProduct(
         name = "Bank Gold Mastercard",
@@ -37,7 +66,11 @@ object CreditCardProducts {
         tier = "Gold",
         interest = "",
         imageRes = R.drawable.card_gold,
-        heroImageRes = null
+        heroImageRes = null,
+
+        minIncome = "RM 100,000 per annum",
+        annualFee = "FREE*",
+        description = "Credit card benefits and features."
     )
 
     val BankWomanMastercard = CreditCardProduct(
@@ -50,7 +83,12 @@ object CreditCardProducts {
         tier = "",
         interest = "",
         imageRes = R.drawable.card_woman,
-        heroImageRes = null
+        heroImageRes = null,
+
+        minIncome = "RM 100,000 per annum",
+        annualFee = "FREE*",
+        description = "Credit card benefits and features."
+
     )
 
     val BankPlatinumIslamicMastercard = CreditCardProduct(
@@ -63,6 +101,10 @@ object CreditCardProducts {
         tier = "Platinum",
         interest = "",
         imageRes = R.drawable.card_platinum_islamic,
-        heroImageRes = null
+        heroImageRes = null,
+
+        minIncome = "RM 100,000 per annum",
+        annualFee = "FREE*",
+        description = "Credit card benefits and features."
     )
 }

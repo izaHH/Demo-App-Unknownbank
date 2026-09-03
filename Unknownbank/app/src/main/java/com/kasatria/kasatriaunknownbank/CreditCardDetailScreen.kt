@@ -42,9 +42,10 @@ import com.kasatria.kasatriaunknownbank.ui.theme.White
 
 @Composable
 fun CreditCardDetailScreen(
+    product: CreditCardProduct,
     onBack: () -> Unit,
-    onApplyNow: () -> Unit,
-    product: CreditCardProduct
+    onApplyNow: () -> Unit
+
 ) {
 
     Box(
@@ -181,7 +182,7 @@ fun CreditCardDetailScreen(
                     )
 
                     Text(
-                        text = "RM 100,000 per annum",
+                        text = product.minIncome,
                         color = Color(0xFF333333),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -219,7 +220,7 @@ fun CreditCardDetailScreen(
                     )
 
                     Text(
-                        text = "FREE*",
+                        text = product.annualFee,
                         color = Color(0xFF333333),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -245,11 +246,7 @@ fun CreditCardDetailScreen(
              */
 
             Text(
-                text =
-                    "Enjoy instant reward redemptions with\n" +
-                            "Premier Travel Credit Card! Get up to 5x reward\n" +
-                            "points, complimentary travel insurance and annual\n" +
-                            "passes to selected airport lounges.",
+                text = product.description,
 
                 modifier = Modifier
                     .fillMaxWidth()
