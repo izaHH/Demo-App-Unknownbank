@@ -49,6 +49,8 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.draw.clip
 
+import androidx.compose.foundation.verticalScroll
+
 
 @Composable
 fun HomeScreen(
@@ -86,118 +88,130 @@ fun HomeScreen(
             contentScale = ContentScale.Crop
         )
 
-        /*
-         * =================================
-         * HOME TOP HEADER
-         * Figma y ≈ 52–94
-         * =================================
-         */
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(
+                    rememberScrollState()
+                )
+        ){
 
-            HomeTopHeader(
+            /*
+             * =================================
+             * HOME TOP HEADER
+             * Figma y ≈ 52–94
+             * =================================
+             */
+
+                HomeTopHeader(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                )
+
+
+            /*
+             * =================================
+             * ACCOUNT CATEGORY CHIPS
+             * Figma y = 142
+             * =================================
+             */
+
+            Row(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-            )
+                    .padding(
+                        start = 16.dp,
+                        top = 142.dp
+                    )
+                    .horizontalScroll(
+                        rememberScrollState()
+                    ),
 
+                horizontalArrangement =
+                    Arrangement.spacedBy(10.dp)
+            ) {
 
-        /*
+                categories.forEach { category ->
+
+                    HomeCategoryChip(
+                        text = category,
+                        selected =
+                            selectedCategory == category,
+
+                        onClick = {
+                            selectedCategory = category
+                        }
+                    )
+                }
+            }
+
+            /*
          * =================================
-         * ACCOUNT CATEGORY CHIPS
-         * Figma y = 142
+         * ACCOUNT CARDS
+         * Figma y = 204
          * =================================
          */
 
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(
-                    start = 16.dp,
-                    top = 142.dp
-                )
-                .horizontalScroll(
-                    rememberScrollState()
-                ),
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(
+                        start = 16.dp,
+                        top = 204.dp
+                    )
+                    .horizontalScroll(
+                        rememberScrollState()
+                    ),
 
-            horizontalArrangement =
-                Arrangement.spacedBy(10.dp)
-        ) {
+                horizontalArrangement =
+                    Arrangement.spacedBy(15.dp)
+            ) {
 
-            categories.forEach { category ->
+                AccountSummaryCard()
 
-                HomeCategoryChip(
-                    text = category,
-                    selected =
-                        selectedCategory == category,
-
-                    onClick = {
-                        selectedCategory = category
-                    }
+                // Second account card visible partially
+                // in the Figma design
+                Box(
+                    modifier = Modifier
+                        .width(290.dp)
+                        .height(160.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(12.dp)
+                        )
                 )
             }
-        }
 
-        /*
-     * =================================
-     * ACCOUNT CARDS
-     * Figma y = 204
-     * =================================
-     */
+            /*
+             * =================================
+             * QUICK ACTIONS
+             * Figma y = 420
+             * =================================
+             */
 
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(
-                    start = 16.dp,
-                    top = 204.dp
-                )
-                .horizontalScroll(
-                    rememberScrollState()
-                ),
-
-            horizontalArrangement =
-                Arrangement.spacedBy(15.dp)
-        ) {
-
-            AccountSummaryCard()
-
-            // Second account card visible partially
-            // in the Figma design
-            Box(
+            QuickActionsSection(
                 modifier = Modifier
-                    .width(290.dp)
-                    .height(160.dp)
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(12.dp)
+                    .align(Alignment.TopStart)
+                    .padding(top = 420.dp),
+                onApply = onApply
+            )
+
+            /*
+             * =================================
+             * HIGHLIGHTS
+             * Figma y = 659
+             * =================================
+             */
+
+            HighlightsSection(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(
+                        top = 659.dp,
+                        bottom = 120.dp
                     )
             )
         }
-
-        /*
-         * =================================
-         * QUICK ACTIONS
-         * Figma y = 420
-         * =================================
-         */
-
-        QuickActionsSection(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 420.dp),
-            onApply = onApply
-        )
-
-        /*
-         * =================================
-         * HIGHLIGHTS
-         * Figma y = 659
-         * =================================
-         */
-
-        HighlightsSection(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 659.dp)
-        )
     }
 }
 

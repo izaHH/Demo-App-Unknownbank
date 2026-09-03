@@ -1080,6 +1080,8 @@ fun UnknownbankBottomNavigation(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .background(Color.White)
+            .navigationBarsPadding()
             .height(100.dp)
     ) {
 
@@ -1113,8 +1115,7 @@ fun UnknownbankBottomNavigation(
                     Alignment.BottomCenter
                 )
                 .fillMaxWidth()
-                .height(84.dp)
-                .navigationBarsPadding(),
+                .height(84.dp),
 
             horizontalArrangement =
                 Arrangement.SpaceEvenly,
@@ -1214,9 +1215,10 @@ private fun BottomNavigationItem(
 
                     modifier =
                         Modifier.size(
-                            57.dp
-                        ),
-                    contentScale = ContentScale.Fit
+                            100.dp
+                        )
+//                      ,
+//                    contentScale = ContentScale.Fit
                 )
             }
 
