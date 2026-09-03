@@ -764,7 +764,39 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
 
                         onScreenShown = {
-                            // Add final analytics here.
+                            //firebase
+                            analytics.logEvent("screen_view"){
+                                param("screen_name", "Credit Card | {{Credit Card Name}} | Application Success")
+                            }
+                            analytics.logEvent("card_application_success"){
+                                param("event_category", "Credit Card - {{Credit Card Name}} - Application Success")
+                                param("event_action", "Credit Card Application Success")
+                                param("event_label","Application Success")
+                                param("product_name","<PRODUCT_NAME e.g. Bank World Mastercard>")
+                                param("product_category","<PRODUCT_CATEGORY e.g. Credit Card>")
+                                param("product_type","<PRODUCT_TYPE e.g. Personal>")
+                                param("product_banking_category","<PRODUCT_BANK_CATEGORY e.g. Conventional>")
+                                param("product_benefit","<PRODUCT_BENEFIT e.g. Annual Fee Waiver>")
+                                param("product_card_type","<PRODUCT_CARD_TYPE e.g. Principal>")
+                                param("product_card_tiers","<PRODUCT_CARD_TIERS e.g. Silver>")
+                                param("product_card_interest","<PRODUCT_CARD_INTEREST e.g. Travel>")
+
+                            //VWOInsights.sendCustomEvent
+                                VWOInsights.sendCustomEvent("card_application_success", mapOf(
+                                    "event_category" to "Credit Card - {{Credit Card Name}} - Application Success",
+                                    "event_action" to "Credit Card Application Success",
+                                    "event_label" to "Application Success",
+                                ))
+
+                            //Amplitude Track
+                                UnknownbankApplication.amplitude.track(
+                                    "card_application_success",mapOf(
+                                        "event_category" to "Credit Card - {{Credit Card Name}} - Application Success",
+                                        "event_action" to "Credit Card Application Success",
+                                        "event_label" to "Application Success",
+                                    )
+                                )
+                            }
                         }
                     )
                 }
