@@ -95,6 +95,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.sp
+import fme.e
 
 private const val TAG = "MainActivity"
 
@@ -473,6 +474,7 @@ fun UsernameEntryScreen(
 fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
     val analytics = Firebase.analytics
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME) }
+    var selectedProduct by remember { mutableStateOf(CreditCardProducts.BankWorldMastercard) }
     var webViewUrl by rememberSaveable { mutableStateOf("") }
     var showWebView by rememberSaveable { mutableStateOf(false) }
 
@@ -613,7 +615,8 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         onBack =  {
                             currentDestination = AppDestinations.CREDIT_CARD
                         },
-                        onCardSelected = {
+                        onCardSelected = { productName ->
+                            selectedProductName = productName
                             currentDestination = AppDestinations.CREDIT_CARD_DETAIL
                         },
                         onFilter = {
@@ -764,36 +767,43 @@ fun UnknownbankApp(userId: String?, onLogout: () -> Unit) {
                         },
 
                         onScreenShown = {
+                            val eventCategory = "Credit Card - ${selectedProduct.name} - Application Success"
+                            val screenName = "Credit Card | ${selectedProduct.name} | Application Success"
+
                             //firebase
                             analytics.logEvent("screen_view"){
-                                param("screen_name", "Credit Card | {{Credit Card Name}} | Application Success")
+                                param("screen_name", screenName)
                             }
                             analytics.logEvent("card_application_success"){
-                                param("event_category", "Credit Card - {{Credit Card Name}} - Application Success")
+                                param("event_category", eventCategory)
                                 param("event_action", "Credit Card Application Success")
                                 param("event_label","Application Success")
-                                param("product_name","<PRODUCT_NAME e.g. Bank World Mastercard>")
-                                param("product_category","<PRODUCT_CATEGORY e.g. Credit Card>")
-                                param("product_type","<PRODUCT_TYPE e.g. Personal>")
-                                param("product_banking_category","<PRODUCT_BANK_CATEGORY e.g. Conventional>")
-                                param("product_benefit","<PRODUCT_BENEFIT e.g. Annual Fee Waiver>")
-                                param("product_card_type","<PRODUCT_CARD_TYPE e.g. Principal>")
-                                param("product_card_tiers","<PRODUCT_CARD_TIERS e.g. Silver>")
-                                param("product_card_interest","<PRODUCT_CARD_INTEREST e.g. Travel>")
+                                param("product_name", ${selectedProduct.name})
+                                param("product_category",${selectedProduct.category})
+                                param("product_type",${selectedProduct.type})
+                                param("product_banking_category",${selectedProduct.bankingCategory})
+                                param("product_benefit",${selectedProduct.benefit})
+                                param("product_card_type",${selectedProduct.cardType})
+                                param("product_card_tiers",${selectedProduct.tier})
+                                param("product_card_interest",${selectedProduct.interest})
 
                             //VWOInsights.sendCustomEvent
                                 VWOInsights.sendCustomEvent("card_application_success", mapOf(
-                                    "event_category" to "Credit Card - {{Credit Card Name}} - Application Success",
+                                    "event_category" to eventCategory,
                                     "event_action" to "Credit Card Application Success",
                                     "event_label" to "Application Success",
+                                    "product_name" to ${selectedProduct.name},
+                                    "product_category" to "Credit Card"
                                 ))
 
                             //Amplitude Track
                                 UnknownbankApplication.amplitude.track(
                                     "card_application_success",mapOf(
-                                        "event_category" to "Credit Card - {{Credit Card Name}} - Application Success",
+                                        "event_category" to eventCategory,
                                         "event_action" to "Credit Card Application Success",
                                         "event_label" to "Application Success",
+                                        "product_name" to ${selectedProduct.name},
+                                        "product_category" to "Credit Card",
                                     )
                                 )
                             }

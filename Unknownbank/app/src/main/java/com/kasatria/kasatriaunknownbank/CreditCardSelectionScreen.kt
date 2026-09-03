@@ -42,7 +42,7 @@ import com.kasatria.kasatriaunknownbank.ui.theme.TextPrimary
 @Composable
 fun CreditCardSelectionScreen(
     onBack: () -> Unit,
-    onCardSelected: () -> Unit = {},
+    onCardSelected: (String) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
 
@@ -211,8 +211,11 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank World\nMastercard",
 
-                    onClick =
-                        onCardSelected
+                    onClick ={
+                        onCardSelected(
+                            "Bank World Mastercard"
+                        )
+                    }
                 )
 
 
@@ -223,8 +226,10 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Gold\nMastercard",
 
-                    onClick =
-                        onCardSelected
+                    onClick = {
+                        onCardSelected("Bank Gold Mastercard")
+                    }
+
                 )
 
 
@@ -235,8 +240,9 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Woman\nMastercard",
 
-                    onClick =
-                        onCardSelected
+                    onClick = {
+                        onCardSelected("Bank Woman Mastercard")
+                    }
                 )
 
 
@@ -247,8 +253,9 @@ fun CreditCardSelectionScreen(
                     name =
                         "Bank Platinum\nIslamic Mastercard",
 
-                    onClick =
-                        onCardSelected
+                    onClick = {
+                        onCardSelected("Bank Platinum Islamic Mastercard")
+                    }
                 )
 
 
